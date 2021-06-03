@@ -1,0 +1,31 @@
+{
+  "name": "diff_farmbot_2021",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/L15V/diff_farmbot_2021.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/L15V/diff_farmbot_2021/issues"
+  },
+  "homepage": "https://gitlab.com/L15V/diff_farmbot_2021#readme",
+  "dependencies": {
+    "ajax": "0.0.4",
+    "atob": "^2.1.2",
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "farmbot": "^13.1.0",
+    "irc": "^0.5.2",
+    "jQuery": "^1.7.4",
+    "mongoose": "^5.12.11",
+    "node-fetch": "^2.6.1",
+    "readline": "^1.3.0"
+  }
+}
