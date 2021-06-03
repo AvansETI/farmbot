@@ -1,26 +1,62 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="nav">
+    <div id=title>
+      <span> Farmbot UI</span>
+      </div>
+      <div id="menu">
+        <router-link to="/">Home</router-link> |
+      <router-link to="/welcom">Welkom</router-link>
+        </div>
+      
+  </div>
+  <router-view />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+html{
+  margin: 0;
+}
+
+body{
+  margin: 0;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+}
+
+#nav {
+  width: 100%;
+  background: limegreen;
+  height: 30px;
+  color:white;
+
+  #title{
+    text-align: left;
+    color: white;
+  }
+
+  router-link{
+    color: white;
+  }
+  router-link:hover{
+    color: gray;
+  }
 }
 </style>
