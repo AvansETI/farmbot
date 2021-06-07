@@ -1,7 +1,7 @@
 const express     = require('express');
 const router      = express.Router();
 
-const config      = require('../config.json');
+const config      = require('../config');
 const setup       = require('../logic/farmbotCom/setup');
 
 var Module = module.exports;
@@ -11,8 +11,9 @@ Module.getToken = getToken;
 
 
 function getToken(req, res) {
-    const email     = req.body.email;
+    const email    = req.body.email;
     const password = req.body.password;
+    
     axios
       .post(config.api.API_URL + "/tokens", {
         'user': {'email': email, 'password': password}

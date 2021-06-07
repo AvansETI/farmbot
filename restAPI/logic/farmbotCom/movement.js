@@ -1,7 +1,7 @@
 global.atob     = require("atob");
 
 let axios       = require("axios").default;
-let config      = require('../../config.json');
+let config      = require('../../config');
 let setup       = require('./setup');
 let mqtt        = require('../../mqtt/mqttCamera')
 
@@ -11,7 +11,7 @@ function moveFarmbot(xAxis, yAxis, zAxis, speedPercentage = 100, photoSequence =
  setup.getFarmbot().moveAbsolute({x: xAxis, y: yAxis, z: zAxis, speed: speedPercentage})
  .then(function(resp) {
     //  if (photoSequence)
-    //  {
+    //  {xc
     //      wait(1000)
     //      takePhoto();
     //  }
@@ -78,6 +78,7 @@ function takePhoto(result) {
     mqtt.publishEvent();
     console.log(`Making a photo...`);
 }
+
 module.exports = {
     moveFarmbot,
     takePhoto,

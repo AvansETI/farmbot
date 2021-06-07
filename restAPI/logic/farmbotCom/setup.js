@@ -2,7 +2,7 @@ global.atob    = require("atob");
 
 let axios      = require("axios").default;
 let Farmbot    = require("farmbot").Farmbot;
-let config     = require('../../config.json');
+let config     = require('../../config');
 let token;
 let farmbot;
 let pointsList = [];
@@ -24,6 +24,7 @@ function createToken(email, password) {
         console.log(`E-mail or password not valid!`);
      });
 }
+
 function generatePoints() {
     if (token == null)  return console.log('Not connected to Farmbot');
     axios

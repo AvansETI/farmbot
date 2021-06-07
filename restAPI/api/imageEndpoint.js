@@ -1,10 +1,12 @@
-const express = require('express');
+import express from "express"
+
 const router = express.Router();
 
-router.post('/login',  auth.getToken);
-
-router.post('/image', (req, res) => {
+router.post("/image", (req, res) => {
+    console.log("received image")
     //save image to files system and database
+
+    res.send()
 })
 
-module.exports = router;
+export default router

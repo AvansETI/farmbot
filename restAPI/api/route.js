@@ -10,4 +10,5 @@ router.get('/points',  auth.validateToken, points.generatePoints);
 //router.post('/points', auth.validateToken,  sequence.sequencePhoto);
 router.post('/sequence', auth.validateToken, sequence.sequencePhoto);
 
+
 module.exports = router;

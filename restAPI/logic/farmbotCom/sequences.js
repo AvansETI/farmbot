@@ -1,7 +1,7 @@
 global.atob     = require("atob");
 
 let axios       = require("axios").default;
-let config      = require('../../config.json');
+let config      = require('../../config');
 let validation  = require('./setup');
 let movement    = require('./movement');
 let setup       = require('./setup');
