@@ -18,7 +18,7 @@ class _AppDrawerState extends State<AppDrawer> {
           //Title of the menu
           AppBar(
             title: Text("Farmbot UI"),
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: true,
           ),
           Expanded(
             //List of navigation items
@@ -32,12 +32,12 @@ class _AppDrawerState extends State<AppDrawer> {
                     
                   ),
                   onTap: () => Navigator.of(context)
-                      .pushReplacementNamed(HomeScreen.routeName),
+                      .pushNamed(HomeScreen.routeName),
                 ),
                 ListTile(
                   leading: Icon(Icons.event_note),
                   title: Text("Logbook"),
-                  onTap: () => Navigator.of(context).pushReplacementNamed(Logbook.routeName),
+                  onTap: () => Navigator.of(context).pushNamed(Logbook.routeName),
                   ),
                     
                 

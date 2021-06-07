@@ -23,6 +23,8 @@ class LogbookProvider with ChangeNotifier{
     this._logbookItems.add(new LogItem(time: new DateTime(2021, 6 ,7 , 10, 22), event: "Complete water sequence", status: "Succeed"));
 
     this._logbookItems.sort((a,b) => b.time.compareTo(a.time));
+
+    notifyListeners();
   }
 
   LogItem getLastLogItem(){
