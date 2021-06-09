@@ -1,12 +1,10 @@
 import mqtt from "mqtt";
 
-import config from "./../config.js";
+import config from "../config.js";
 
 export default class CameraClient {
   client = undefined;
   responseFunction = undefined;
-
-  waitingForResponse = false;
 
   constructor(farmbotId) {
     this.farmbotId = farmbotId;
@@ -33,30 +31,35 @@ export default class CameraClient {
     });
   }
 
-  async onCameraMessage(topic, message) {
-    console.log(this.responseFunction);
-    console.log(this.waitingForResponse);
-    if (this.waitingForResponse && this.responseFunction) {
-      await this.responseFunction();
+  onCameraMessage(topic, message) {
+    console.log(this.responseFunction)
+    if (this.responseFunction) {
+      this.responseFunction(message);
     }
   }
 
-  async takePicture() {
-    console.log(this.farmbotId);
-    await this.client.publish(`farmbot/${this.farmbotId}/camera`, "");
+  takePicture() {
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        return reject("Camera did not respond within 20 seconds");
+      }, 20000);
 
-    this.waitingForResponse = true;
+      this._addResponseFunction((data) => {
+        this._removeResponseFunction();
+        return resolve(data);
+      });
+
+      this.client.publish(`farmbot/${this.farmbotId}/camera`, "");
+    });
   }
 
-  addResponseFunction(responseFunction) {
-    console.log(responseFunction);
+  _addResponseFunction(responseFunction) {
     if (!this.responseFunction) {
       this.responseFunction = responseFunction;
-      console.log(responseFunction)
     }
   }
 
-  removeResponseFunction() {
+  _removeResponseFunction() {
     this.responseFunction = undefined;
   }
 }

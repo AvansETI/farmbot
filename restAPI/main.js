@@ -2,9 +2,10 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 
+import mongoose from 'mongoose';
 import cron from "node-cron";
 
-import FarmbotManager from "./logic/DataSequence.js";
+import FarmbotManager from "./logic/farmbotManager.js";
 import config from "./config.js";
 
 // const { createToken, generatePoints, connectFarmbot } = require("./logic/farmbotCom/setup");
@@ -12,9 +13,18 @@ import config from "./config.js";
 // const { sequencePhoto, sequenceWater } = require("./logic/farmbotCom/sequences");
 
 // import route from "./api/route"
-import imageEndpoint from "./api/imageEndpoint.js"
+import imageEndpoint from "./api/imageEndpoint.js";
+
+mongoose.connect("mongodb://localhost:27017/", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const app = express();
+const farmbotManager = new FarmbotManager(
+  config.user.email,
+  config.user.password
+);
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,7 +33,7 @@ app.use(
   bodyParser.raw({
     inflate: true,
     limit: "15mb",
-    type: "*/*",
+    type: "image/*",
   })
 );
 
@@ -31,63 +41,25 @@ app.all("*", function (req, res, next) {
   console.log(
     `[${new Date().toISOString()}] [${req.method}] ${req.url} has been invoked!`
   );
-  next()
+  next();
 });
 
-// app.use(express.static("public"));
+app.use(express.static("public"));
 // app.use("/api/route", route);
 app.use(imageEndpoint);
 
-const farmbotManager = new FarmbotManager(
-  config.user.email,
-  config.user.password
-);
 await farmbotManager.connect();
 
-// cron.schedule("* * * * *", async () => {
+cron.schedule("*/60 * * * *", async () => {
+  await farmbotManager.performDataSequence();
+});
 
-// });
-
-await farmbotManager.performDataSequence();
+cron.schedule("* 8 * * * ", async () => {
+  await farmbotManager.performWaterSequence();
+});
 
 app.listen(config.http.port, function () {
   console.log(`Server started at port: 8080 `);
 });
 
-// async function main() {
-//   const inlog = await askParameters("E-mailaddress: ", false);
-//   const password = await askParameters("Password: ", true);
-
-//   await createToken(inlog, password);
-
-//   while (true) {
-//     const subscribeTopic = await askParameters("Get data from topic: ", false);
-
-//     if (subscribeTopic == "move") {
-//       moveFarmbot(100, 100, 100, 100);
-//     }
-
-//     if (subscribeTopic == "exit") {
-//       break;
-//     }
-
-//     if (subscribeTopic == "connect") {
-//       connectFarmbot();
-//       generatePoints();
-//     }
-
-//     if (subscribeTopic == "sequence") {
-//       sequencePhoto();
-//     }
-
-//     if (subscribeTopic == "photo") {
-//       takePhoto();
-//     }
-
-//     if (subscribeTopic == "water") {
-//       sequenceWater();
-//     }
-//   }
-// }
-
-// main();
+await farmbotManager.performDataSequence();

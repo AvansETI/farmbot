@@ -23,7 +23,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "farmbot": "^13.1.0",
-    "mongoose": "^5.12.11",
+    "mongoose": "^5.12.13",
     "node-cron": "^3.0.0"
   }
 }
