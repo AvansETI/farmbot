@@ -5,6 +5,7 @@ import { Farmbot } from "farmbot";
 import axios from "axios";
 
 import CameraClient from "./CameraMqttClient.js";
+import WaterSequence from "./WaterSequence.js";
 import config from "../config.js";
 
 export default class FarmbotManager {
@@ -60,10 +61,19 @@ export default class FarmbotManager {
       this.farmbotInformation
     );
 
-    await sequence.performSequence();
+    await sequence.performCameraSequence();
   }
 
-  performWaterSequence() {}
+  async performWaterSequence() {
+
+    const sequence = new DataSequence(
+      this.farmbot,
+      null,
+      this.farmbotInformation,
+    );
+
+    await sequence.performWateringSequence();
+  }
 }
 
 class DataSequence {
@@ -73,21 +83,40 @@ class DataSequence {
     this.farmbotInformation = farmbotInformation;
   }
 
-  async performSequence() {
+  async performCameraSequence() {
     await this.fetchPlantsLocations();
 
     this.cameraClient.addResponseFunction(async () => {
-      await this.performStep();
+      await this.performCameraStep();
     });
 
-    await this.performStep();
+    await this.performCameraStep();
 
     // if (await this.bootJetson()) {
     //   //   await setTimeout(this.performStep, 120000);
     // } else {
     //   //call function immediatly
-    //   //   await this.performStep();
+    //   //   await this.performCameraStep();
     // }
+  }
+
+  async performWateringSequence() {
+    await this.fetchPlantsLocations();
+    await this.fetchToolLocations();
+    await this.fetchTools();
+    
+    this.waterSequence = new WaterSequence(
+      this.farmbot,
+      this.tools,
+      this.waterNozzle
+    );
+
+   await this.waterSequence.pickUpNozzle();
+
+    await this.performWaterStep();
+
+    await this.waterSequence.putBackNozzle();
+
   }
 
   //   async bootJetson() {
@@ -112,16 +141,57 @@ class DataSequence {
         );
       });
 
-      this.points.sort((a, b) => {
-        return a.x - b.x - a.y - b.y;
-      });
+      this.points.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1 )
+      
     } catch (err) {
       console.log(err);
       console.log(`No plant points found`);
     }
   }
 
-  async performStep() {
+  async fetchToolLocations() {
+    try {
+      const response = await axios.get("https://my.farm.bot/api" + "/points", {
+        headers: {
+          Authorization: this.farmbotInformation.authToken,
+        },
+      });
+
+      this.tools = response.data.filter((point) => {
+        return (
+          point.pointer_type === "ToolSlot"
+        );
+      });
+
+      this.tools.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1 )
+    } catch (err) {
+      console.log(err);
+      console.log(`No ToolSlots found`);
+    }
+  }
+
+  async fetchTools() {
+    try {
+      const response = await axios.get("https://my.farm.bot/api" + "/tools", {
+        headers: {
+          Authorization: this.farmbotInformation.authToken,
+        },
+      });
+
+       const wateringNozzle = response.data.filter((point) => 
+          point.name == "Watering Nozzle"
+        );
+        
+        this.waterNozzle = wateringNozzle[0];
+        console.log(this.waterNozzle);
+
+    } catch (err) {
+      console.log(err);
+      console.log(`No ToolSlots found`);
+    }
+  }
+
+  async performCameraStep() {
     if (this.points.length === 0) {
       return;
     }
@@ -137,5 +207,23 @@ class DataSequence {
     this.points = this.points.slice(1, this.points.length);
 
     await this.cameraClient.takePicture();
+  }
+
+  async performWaterStep() {
+    if (this.points.length === 0) {
+      return;
+    }
+
+    const firstLocation = this.points[0];
+
+    await this.farmbot.moveAbsolute({
+      x: firstLocation.x,
+      y: firstLocation.y,
+      z: 0,
+      speed: 100,
+    });
+    this.points = this.points.slice(1, this.points.length);
+
+    await this.waterSequence.giveWater();
   }
 }

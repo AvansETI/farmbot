@@ -50,6 +50,8 @@ await farmbotManager.connect();
 
 await farmbotManager.performDataSequence();
 
+await farmbotManager.performWaterSequence();
+
 app.listen(config.http.port, function () {
   console.log(`Server started at port: 8080 `);
 });

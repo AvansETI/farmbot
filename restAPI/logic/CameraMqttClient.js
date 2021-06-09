@@ -5,7 +5,6 @@ import config from "./../config.js";
 export default class CameraClient {
   client = undefined;
   responseFunction = undefined;
-
   waitingForResponse = false;
 
   constructor(farmbotId) {
