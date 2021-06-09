@@ -13,10 +13,10 @@ export default class PhotoSequence {
     if (!(await this.readStatus()).pins[10].value) {
       await this.farmbot.togglePin({ pin_number: 10 });
       setTimeout(async () => {
-        return this.performStep();
+        return this.performAction();
       }, 120000);
     } else {
-      return this.performStep();
+      return this.performAction();
     }
   }
 
@@ -63,7 +63,7 @@ export default class PhotoSequence {
     }
   }
 
-  performStep() {
+  performAction() {
     return new Promise(async (resolve, reject) => {
       for (const pointIndex in this.points) {
         try {

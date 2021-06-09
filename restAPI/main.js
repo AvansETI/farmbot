@@ -50,7 +50,7 @@ app.use(imageEndpoint);
 
 await farmbotManager.connect();
 
-cron.schedule("*/60 * * * *", async () => {
+cron.schedule("*/60 10-22 * * *", async () => {
   await farmbotManager.performDataSequence();
 });
 
@@ -62,4 +62,3 @@ app.listen(config.http.port, function () {
   console.log(`Server started at port: 8080 `);
 });
 
-await farmbotManager.performDataSequence();
