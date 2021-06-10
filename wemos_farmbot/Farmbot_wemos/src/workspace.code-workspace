@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "..\\.."
+		},
+		{
+			"name": "Farmbot_wemos",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
