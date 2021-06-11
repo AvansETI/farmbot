@@ -11,6 +11,12 @@ if __name__ == "__main__":
     camera = CameraManager(1, config)
 
     if config.ssh_tunneling is True:
-        tunnel.connectTunnel()
+        try:
+            tunnel.connectTunnel()
+        except:
+            print("Ssh tunnel is not working at the moment")
 
-    MqttManager(camera, config, handler)
+    try:
+        MqttManager(camera, config, handler)
+    except:
+        exit(-1)
