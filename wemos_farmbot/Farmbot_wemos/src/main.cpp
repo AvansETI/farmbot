@@ -36,9 +36,9 @@ char *mqttAdress = "85.215.87.215";
 char *mqttUserName = "farmbot";
 char *mqttPassword = "Farmb0t_1!";
 
-char *farmbot_id = "Device_10816";
-char *receiveTopic = "sensor/Device_10816/controls";
-char *sendTopic = "sensor/Device_10816/measurement";
+char *farmbot_id = "device_10816";
+char *receiveTopic = "sensor/device_10816/controls";
+char *sendTopic = "sensor/device_10816/measurement";
 
 IPAddress mqttserver(85, 215, 87, 215);
 
