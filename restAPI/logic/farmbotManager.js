@@ -13,9 +13,10 @@ export default class FarmbotManager {
 
   cameraMqttClient = undefined;
 
-  constructor(email, password) {
+  constructor(email, password, database) {
     this.farmbotInformation.email = email;
     this.farmbotInformation.password = password;
+    this.database = database;
   }
 
   async connect() {
@@ -57,7 +58,8 @@ export default class FarmbotManager {
     const sequence = new PhotoSequence(
       this.farmbot,
       this.cameraMqttClient,
-      this.farmbotInformation
+      this.farmbotInformation,
+      this.database
     );
 
     return sequence.performSequence();
@@ -182,18 +184,24 @@ class WaterSequence {
     await this.farmbot.moveAbsolute({
       x: this.water_nozzle.x + 150,
       y: this.water_nozzle.y,
-      z: this.water_nozzle.z,
+      z: this.water_nozzle.z - 2,
     });
 
     await this.farmbot.moveAbsolute({
       x: this.water_nozzle.x,
       y: this.water_nozzle.y,
-      z: this.water_nozzle.z,
+      z: this.water_nozzle.z - 2,
     });
 
     await this.farmbot.moveAbsolute({
       x: this.water_nozzle.x,
       y: this.water_nozzle.y,
+      z: 0,
+    });
+
+    await this.farmbot.moveAbsolute({
+      x: 0,
+      y: 0,
       z: 0,
     });
   }

@@ -20,19 +20,32 @@ export default class CameraClient {
   }
 
   onConnect() {
-    this.client.subscribe(`farmbot/${this.farmbotId}/logs`, (err) => {
+    this.client.subscribe([`farmbot/${this.farmbotId}/logs`, `sensor/${this.farmbotId}/measurement`], (err) => {
       if (err) {
         console.log("error subscribing");
       }
 
       this.client.on("message", (topic, message) => {
-        this.onCameraMessage(topic, message);
+        this.onHandleTopics(topic, message);
       });
+
     });
   }
 
-  onCameraMessage(topic, message) {
-    console.log(this.responseFunction)
+  onHandleTopics(topic, message) {
+    if (topic === `farmbot/${this.farmbotId}/logs`)
+        this.onCameraMessage(message);
+    if (topic === `sensor/${this.farmbotId}/measurement`)
+        this.onMeasurementMessage(message);
+  }
+
+  onCameraMessage(message) {
+    if (this.responseFunction) {
+      this.responseFunction(message);
+    }
+  }
+
+  onMeasurementMessage(message) {
     if (this.responseFunction) {
       this.responseFunction(message);
     }
@@ -50,6 +63,21 @@ export default class CameraClient {
       });
 
       this.client.publish(`farmbot/${this.farmbotId}/camera`, "");
+    });
+  }
+
+  receiveMeasurements() {
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        return reject("Sensor did not respond within 20 seconds");
+      }, 20000);
+
+      this._addResponseFunction((data) => {
+        this._removeResponseFunction();
+        return resolve(data);
+      });
+
+      this.client.publish(`sensor/${this.farmbotId}/controls`, "");
     });
   }
 
