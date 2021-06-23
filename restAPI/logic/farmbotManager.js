@@ -13,10 +13,9 @@ export default class FarmbotManager {
 
   cameraMqttClient = undefined;
 
-  constructor(email, password, database) {
+  constructor(email, password) {
     this.farmbotInformation.email = email;
     this.farmbotInformation.password = password;
-    this.database = database;
   }
 
   async connect() {
@@ -59,7 +58,6 @@ export default class FarmbotManager {
       this.farmbot,
       this.cameraMqttClient,
       this.farmbotInformation,
-      this.database
     );
 
     return sequence.performSequence();

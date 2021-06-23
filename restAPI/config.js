@@ -1,8 +1,7 @@
 export default {
   user: {
-    email: "t.vandervelden5@student.avans.nl",
-    password: "Farmbot1!",
-    ip: "192.168.0.4",
+    email: "******",
+    password: "******",
   },
   http: {
     port: 3000,
@@ -10,14 +9,14 @@ export default {
   api: {
     URL: "https://my.farmbot.io/api",
   },
-  mqttServo: {
-    broker: "mqtt://test.mosquitto.org",
-    topic_log: "test_farmbot",
-    topic_event: "test_farmbot_event",
+  database: {
+    address: "mongodb://127.0.0.1:27017/farmbot",
+    username: "****",
+    password: "****"
   },
   mqttCamera: {
-    broker: "mqtt://85.215.87.215",
-    username: "farmbot",
-    password: "Farmb0t_1!",
+    broker: "mqtt://*****",
+    username: "****",
+    password: "*****",
   },
 };

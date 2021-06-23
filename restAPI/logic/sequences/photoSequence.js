@@ -1,19 +1,16 @@
 import axios from "axios"
-import database from "./../../database/database.js";
-import config from "./../../config.js";
+
+import { savePlant } from "../../database/database.js";
 
 export default class PhotoSequence {
-  constructor(farmbot, cameraClient, farmbotInformation, database) {
+  constructor(farmbot, cameraClient, farmbotInformation) {
     this.farmbot = farmbot;
     this.cameraClient = cameraClient;
     this.farmbotInformation = farmbotInformation;
-    this.database = database;
   }
 
   async performSequence() {
     await this.fetchPlantsLocations();
-    // this.database.connect();
-    // this.database.createSchema();
 
     if (!(await this.readStatus()).pins[10].value) {
       await this.farmbot.togglePin({ pin_number: 10 });
@@ -83,7 +80,8 @@ export default class PhotoSequence {
           console.log(responseMeasurement);
           const responseCamera = (await this.cameraClient.takePicture()).toString();
           console.log(responseCamera);
-          this.database.saveData(this.points[pointIndex], responseCamera, responseMeasurement);
+
+          savePlant(this.points[pointIndex], responseCamera, responseMeasurement);
 
         } catch (err) {
           console.log(err);
