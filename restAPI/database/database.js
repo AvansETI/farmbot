@@ -22,7 +22,7 @@ function savePlant(point, responseCamera, responseMeasurement) {
 }
 
 async function plantIds() {
-  return await plantModel.find({}, 'id'); 
+  return await plantModel.find({}).select({_id: 0, id: 1}); 
 }
 
 async function allPlantTypes() {
@@ -31,6 +31,10 @@ async function allPlantTypes() {
 
 async function getPlants(offset = 0, limit = 10) {
   return await plantModel.find().skip(+offset).limit(+limit);
+}
+
+async function getPlant(id, offset = 0, limit = 10) {
+  return await plantModel.find({id: +id}).skip(+offset).limit(+limit);
 }
 
 const plantSchema = new mongoose.Schema({
@@ -45,4 +49,4 @@ const plantSchema = new mongoose.Schema({
 
 const plantModel = mongoose.model('Plant', plantSchema);
 
-export {plantModel, savePlant, getPlants, allPlantTypes, plantIds}
+export {plantModel, savePlant, getPlants, allPlantTypes, plantIds, getPlant}
