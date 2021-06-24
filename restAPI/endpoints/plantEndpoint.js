@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getPlants, allPlantTypes, plantIds, getPlant, getPlantType } from "../database/database.js";
+import { getPlants, allPlantTypes, plantIds, getPlant, getPlantType } from "./../database/database.js";
 
 const router = express.Router();
 

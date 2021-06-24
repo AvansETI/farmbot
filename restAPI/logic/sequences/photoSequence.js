@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import { savePlant } from "../../database/database.js";
+import { savePlant } from "./../../database/database.js";
 
 export default class PhotoSequence {
   constructor(farmbot, cameraClient, farmbotInformation) {
