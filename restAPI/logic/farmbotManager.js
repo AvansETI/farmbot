@@ -1,3 +1,4 @@
+
 import atob from "atob";
 global.atob = atob;
 
@@ -7,6 +8,10 @@ import { Farmbot } from "farmbot";
 import PhotoSequence from "./sequences/photoSequence.js";
 import CameraClient from "./cameraMqttClient.js";
 
+/* FarmbotManager
+
+
+*/
 export default class FarmbotManager {
   farmbot = undefined;
   farmbotInformation = {};
@@ -30,6 +35,10 @@ export default class FarmbotManager {
     }
   }
 
+  /*  getAuthToken
+      Returns the Farmbot_id and Farmbot token by posting a request on my.farm.bot/api/tokens 
+      The Farmbot token is used for communicating with the Farmbot
+  */
   async getAuthToken() {
     try {
       const reponse = await axios.post("https://my.farm.bot/api" + "/tokens", {
@@ -53,6 +62,9 @@ export default class FarmbotManager {
     this.cameraMqttClient = new CameraClient(this.farmbotInformation.id);
   }
 
+  /*  performDataSequence()
+      Starts the sequence of collecting the data out of the field
+  */
   performDataSequence() {
     const sequence = new PhotoSequence(
       this.farmbot,
@@ -63,6 +75,9 @@ export default class FarmbotManager {
     return sequence.performSequence();
   }
 
+  /*  performWaterSequence()
+      Starts the sequence of watering all the plants within the field
+  */
   performWaterSequence() {
     const sequence = new WaterSequence(this.farmbot, this.farmbotInformation);
 
@@ -70,6 +85,9 @@ export default class FarmbotManager {
   }
 }
 
+/*  WaterSequence
+
+*/
 class WaterSequence {
   water_nozzle = {};
 
@@ -81,24 +99,22 @@ class WaterSequence {
     this.farmbotInformation = farmbotInformation;
   }
 
+  /*  performWateringSequence()
+      Collects the locations of the tools and plants. Then it starts the watering action.
+  */
   async performWateringSequence() {
     const tools = await this.fetchTools();
     const locations = await this.fetchLocations();
 
-    console.log(locations);
-
     this.filterPlants(locations);
     this.filterTools(tools, locations);
-
-    this.waterSequence = new WaterSequence(
-      this.farmbot,
-      this.tools,
-      this.waterNozzle
-    );
 
     return this.performAction();
   }
 
+  /*  fetchTools()
+      Fetches all the tools that are within the field.
+  */
   async fetchTools() {
     try {
       const response = await axios.get("https://my.farm.bot/api" + "/tools", {
@@ -114,6 +130,9 @@ class WaterSequence {
     }
   }
 
+  /*  fetchLocations()
+      Fetches all the points within the field with their data.
+  */
   async fetchLocations() {
     try {
       const response = await axios.get("https://my.farm.bot/api" + "/points", {
@@ -129,6 +148,9 @@ class WaterSequence {
     }
   }
 
+  /*  filterPlants(locations)
+      Creates a list of planted plants, sorted based on their coordinates.
+  */ 
   filterPlants(locations) {
     this.plants = locations.filter((point) => {
       return point.pointer_type === "Plant" && point.plant_stage === "planted";
@@ -142,6 +164,9 @@ class WaterSequence {
     });
   }
 
+  /*  filterTools(tools, locations)
+      Returns the data of the water nozzle, so the coordinates from the Watering Nozzle can be retained.
+  */
   filterTools(tools, locations) {
     const wateringNozzleId = tools.filter((tool) => {
       return tool.name === "Watering Nozzle";
@@ -152,6 +177,9 @@ class WaterSequence {
     })[0];
   }
 
+  /*  pickUpTool()
+      Picks up the Watering Nozzle.
+  */
   async pickUpTool() {
     await this.farmbot.moveAbsolute({
       x: this.water_nozzle.x,
@@ -170,8 +198,17 @@ class WaterSequence {
       y: this.water_nozzle.y,
       z: this.water_nozzle.z,
     });
+
+    await this.farmbot.moveAbsolute({
+      x: this.water_nozzle.x + 150,
+      y: this.water_nozzle.y,
+      z: 0,
+    });
   }
 
+  /*  putBackTool()
+      Puts back the Watering Nozzle.
+  */
   async putBackTool() {
     await this.farmbot.moveAbsolute({
       x: this.water_nozzle.x + 150,
@@ -199,21 +236,29 @@ class WaterSequence {
 
     await this.farmbot.moveAbsolute({
       x: 0,
-      y: 0,
+      y: 100,
       z: 0,
     });
   }
 
-  giveWater(miliseconds) {
+  /*  giveWater(milliseconds)
+      Toggles the pin of the water, then toggles it again after x milliseconds. 
+  */
+  giveWater(milliseconds) {
     return new Promise(async (resolve, reject) => {
       await this.farmbot.togglePin({ pin_number: 8 });
       setTimeout(async () => {
         await this.farmbot.togglePin({ pin_number: 8 });
         return resolve();
-      }, miliseconds);
+      }, milliseconds);
     });
   }
 
+  /*  performAction()
+      Picks up the Watering nozzle,
+      then moves the Farmbot over the location of the plants, watering each location within the plants list,
+      finally returns the Watering Nozzle.
+  */
   performAction() {
     return new Promise(async (resolve, reject) => {
       await this.pickUpTool();

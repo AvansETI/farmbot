@@ -4,6 +4,9 @@ import { getPlants, allPlantTypes, plantIds, getPlant, getPlantType } from "../d
 
 const router = express.Router();
 
+/*
+    get the data out of the API. See database.js for the corresponding functions.
+*/
 router.get('/', async (req, res) => {
     res.json(await getPlants(req.query.offset, req.query.amount))
 })

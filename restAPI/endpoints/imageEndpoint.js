@@ -5,6 +5,9 @@ import express from "express";
 
 const router = express.Router();
 
+/*
+    returns the image of an image with a specified id.
+*/
 router.get("/:imageId", (req, res) => {
   const photoId = req.params.imageId;
 
@@ -13,6 +16,9 @@ router.get("/:imageId", (req, res) => {
   }
 });
 
+/*
+    creates an image within the image folder of the photo that has been taken.
+*/
 router.post("/", (req, res) => {
   const photoId = req.query.messageId;
 

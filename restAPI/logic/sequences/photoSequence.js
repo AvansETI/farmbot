@@ -2,6 +2,9 @@ import axios from "axios"
 
 import { savePlant } from "../../database/database.js";
 
+/* PhotoSequence
+
+*/
 export default class PhotoSequence {
   constructor(farmbot, cameraClient, farmbotInformation) {
     this.farmbot = farmbot;
@@ -9,6 +12,11 @@ export default class PhotoSequence {
     this.farmbotInformation = farmbotInformation;
   }
 
+  /*  performSequence()
+      fetch the locations of the plant,
+      read out the pi if the camera is connected or not,
+      then perform the data collection action.
+  */
   async performSequence() {
     await this.fetchPlantsLocations();
 
@@ -22,6 +30,9 @@ export default class PhotoSequence {
     }
   }
 
+  /*  readStatus()
+      reads out the status of the camera.
+  */
   async readStatus() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -39,6 +50,9 @@ export default class PhotoSequence {
     });
   }
 
+  /*  fetchPlantLocations()
+      save all the planted plants in a list, sorted by their coordinates.
+  */
   async fetchPlantsLocations() {
     try {
       const response = await axios.get("https://my.farm.bot/api" + "/points", {
@@ -65,8 +79,13 @@ export default class PhotoSequence {
     }
   }
 
+  /*  performAction()
+      Move the Farmbot over all the plants, taking a photo of it and saving all the data in the database.
+      After being done, move the Farmbot to home.
+  */
   performAction() {
     return new Promise(async (resolve, reject) => {
+
       for (const pointIndex in this.points) {
         try {
           await this.farmbot.moveAbsolute({

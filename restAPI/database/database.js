@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 
+/*  savePlant(point, responseCamera, responseMeasurement)
+    Saves a plant within the database with the necessary info. See plantSchema for the data within the model.
+*/
 function savePlant(point, responseCamera, responseMeasurement) {
   var today = new Date();
   
@@ -21,6 +24,14 @@ function savePlant(point, responseCamera, responseMeasurement) {
   });
 }
 
+/* 
+    The functions below are used to get certain data out of the database
+    plantIDs -> returns all the ID's within the database
+    allPlantTypes -> returns all the plant types within the database
+    getPlants -> Returns all the data of the plants within the database
+    getPlant -> Returns all the data of a certain plant (based on ID)
+    getPlantType -> Returns all the data of a certain plant type
+*/
 async function plantIds() {
   return await plantModel.find({}).select({_id: 0, id: 1}); 
 }
@@ -41,6 +52,10 @@ async function getPlantType(plant_type) {
   return await plantModel.find({plant_type: plant_type});
 }
 
+/*  plantSchema
+    The structure of the data within the database.
+    CHANGE IF DATA STRUCTURE CHANGES. ALSO CHANGE savePlant()
+*/
 const plantSchema = new mongoose.Schema({
   plant_type : String,
   id : Number,
