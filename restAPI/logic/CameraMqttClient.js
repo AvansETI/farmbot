@@ -1,6 +1,6 @@
 import mqtt from "mqtt";
 
-import config from "../config.js";
+import config from "./../config.js";
 
 /*  CameraClient
 

@@ -6,7 +6,7 @@ import axios from "axios";
 import { Farmbot } from "farmbot";
 
 import PhotoSequence from "./sequences/photoSequence.js";
-import CameraClient from "./cameraMqttClient.js";
+import CameraClient from "./CameraMqttClient.js";
 
 /* FarmbotManager
 
