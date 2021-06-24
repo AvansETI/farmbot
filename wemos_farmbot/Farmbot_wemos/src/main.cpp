@@ -153,26 +153,15 @@ void loop()
   Serial.print(" *C ");
   Serial.println();
   
-  /*if (WiFi.status() == WL_CONNECTED)
-  {
-    reseted = false;
-
-    reset = digitalRead(resetPin);
+  reset = digitalRead(resetPin);
     Serial.println("Reset: ");
     Serial.print(reset);
-    
+   
     if (reset == 1)
     {
       resetWifi();
     }
-  }
-  else
-  {
-    if (!reseted)
-    {
-      resetWifi();
-    }
-  }*/
+
   client.loop();
   delay(2000);
 }
@@ -181,12 +170,5 @@ void loop()
 
 void resetWifi()
 {
-  reseted = true;
-  //WiFi.disconnect(true);
-  //delay(500);
-  //wm.resetSettings();
-  //delay(500);
-  // wm.setBreakAfterConfig(true);
-  //delay(500);
   wm.startConfigPortal(dev_id, pwd);
 }
