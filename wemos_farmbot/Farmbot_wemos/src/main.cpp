@@ -20,50 +20,54 @@
 
 WiFiServer server(80);
 
+//Defenitions for the DHT sensor
 #define DHTPIN D4
 #define DHTTYPE DHT11
 
+//Define pin of the reset button.
 int resetPin = D6;
 
 int reset;
 
+//Credentials of the accespoint that is being used to configure wifi.
 char *dev_id = "th_001";
 char *pwd = "FarmbotAppels";
 
-char mqtt_server[40];
-
+//MQTT adres and credentials
 char *mqttAdress = "85.215.87.215";
 char *mqttUserName = "farmbot";
 char *mqttPassword = "Farmb0t_1!";
 
+//MQTT topics to trigger and send data
 char *farmbot_id = "device_10816";
 char *receiveTopic = "sensor/device_10816/controls";
 char *sendTopic = "sensor/device_10816/measurement";
-
-IPAddress mqttserver(85, 215, 87, 215);
 
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
 WiFiManager wm;
+
+//prototype of reset wifi
 void resetWifi();
 
-bool reseted = false;
-
+//DHT definision
 DHT dht(DHTPIN, DHTTYPE);
 
 bool shouldSaveConfig = false;
 
-//callback notifying us of the need to save config
+//callback notifying to save config
 void saveConfigCallback()
 {
   Serial.println("Should save config");
   shouldSaveConfig = true;
 }
 
+//Callback function to execute when trigger message is reveived.
 void callback(char *topic, byte *payload, unsigned int length)
 {
+  //Read value of the dht sensor
   float h = dht.readHumidity();
   float t = dht.readTemperature();
 
@@ -81,11 +85,10 @@ void callback(char *topic, byte *payload, unsigned int length)
   Serial.print(" *C ");
   Serial.println();
 
+//Make json to send back over MQTT
   DynamicJsonDocument doc(1024);
   String output;
   
-
-
   doc["humidity"] = h;
   doc["temperature"] = t;
 
@@ -103,19 +106,16 @@ void setup()
   Serial.print("MAC: ");
   Serial.println(WiFi.macAddress());
 
-  Serial.println("mounting FS...");
-
-  
-  
+  //start and configure network
   wm.setSaveConfigCallback(saveConfigCallback);
-
-  //strcpy(mqtt_server, json["mqtt_server"]);
   wm.autoConnect(dev_id, pwd);
 
   pinMode(resetPin, INPUT);
   
    if (WiFi.status() == WL_CONNECTED)
   {
+
+    //set and configure mqtt broker.
     client.setServer(mqttAdress, 1883);
    client.setCallback(callback);
    
@@ -126,25 +126,27 @@ void setup()
     Serial.println("Not connected");
   }
   } 
-   
 
- 
-  
-
+  //start dht sensor
   dht.begin();
 }
 
+//main loop of program
 void loop()
 {
+
+  //read temperature
   float h = dht.readHumidity();
   float t = dht.readTemperature();
 
+  //error log if dht is not working
   if (isnan(h) || isnan(t))
   {
     Serial.println("Failed to read from DHT sensor!");
     return;
   }
 
+  //print to test if dht is working
   Serial.print("Humidity: ");
   Serial.print(h);
   Serial.print(" %\t");
@@ -153,6 +155,8 @@ void loop()
   Serial.print(" *C ");
   Serial.println();
   
+  //read to value of button, that is connected on the reset pin.
+  //If pressed, network can be reconfigured.
   reset = digitalRead(resetPin);
     Serial.println("Reset: ");
     Serial.print(reset);
@@ -167,7 +171,7 @@ void loop()
 }
 
 
-
+//Method to reconfigure network settings
 void resetWifi()
 {
   wm.startConfigPortal(dev_id, pwd);
