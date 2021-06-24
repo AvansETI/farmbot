@@ -37,6 +37,10 @@ async function getPlant(id, offset = 0, limit = 10) {
   return await plantModel.find({id: +id}).skip(+offset).limit(+limit);
 }
 
+async function getPlantType(plant_type) {
+  return await plantModel.find({plant_type: plant_type});
+}
+
 const plantSchema = new mongoose.Schema({
   plant_type : String,
   id : Number,
@@ -49,4 +53,4 @@ const plantSchema = new mongoose.Schema({
 
 const plantModel = mongoose.model('Plant', plantSchema);
 
-export {plantModel, savePlant, getPlants, allPlantTypes, plantIds, getPlant}
+export {plantModel, savePlant, getPlants, allPlantTypes, plantIds, getPlant, getPlantType}

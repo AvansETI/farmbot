@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getPlants, allPlantTypes, plantIds, getPlant } from "../database/database.js";
+import { getPlants, allPlantTypes, plantIds, getPlant, getPlantType } from "../database/database.js";
 
 const router = express.Router();
 
@@ -18,6 +18,10 @@ router.get('/filter', async (req, res) => {
   
 router.get('/id', async (req, res) => {
     res.json(await plantIds());
+})
+
+router.get('/plant_type', async (req, res) => {
+    res.json(await getPlantType(req.query.plant_type))
 })
 
 export default router;
