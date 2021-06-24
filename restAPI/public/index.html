@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>Project - Farmbot</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        socket.on("log", receivedLog)
+
+        function receivedLog(log) {
+            console.log(log);
+            logDiv = document.getElementById("log");
+            logDiv.innerHTML = "<p>" + log + "<\p>" + logDiv.innerHTML;
+        }
+
+        function submitEvent(event) {
+            socket.emit('event', event);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>IWSN - Wemos - Simple interface</h1>
+    EVENTS: 
+    <button name="outoforder">OUT OF ORDER</button>
+    <button name="start">START</button>
+    <button name="button_1">BUTTON 1</button>
+    <button name="button_2">BUTTON 2</button>
+
+    <h2>Messages from Farmbot:</h2>
+    <div id="log"></div>
+</body>
+</html>
