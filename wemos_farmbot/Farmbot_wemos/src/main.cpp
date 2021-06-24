@@ -34,9 +34,9 @@ char *dev_id = "th_001";
 char *pwd = "FarmbotAppels";
 
 //MQTT adres and credentials
-char *mqttAdress = "85.215.87.215";
-char *mqttUserName = "farmbot";
-char *mqttPassword = "Farmb0t_1!";
+char *mqttAdress = "sendlab.nl";
+char *mqttUserName = "farmbot_sensor";
+char *mqttPassword = "F@rmB0t!@sensor";
 
 //MQTT topics to trigger and send data
 char *farmbot_id = "device_10816";
@@ -116,7 +116,7 @@ void setup()
   {
 
     //set and configure mqtt broker.
-    client.setServer(mqttAdress, 1883);
+    client.setServer(mqttAdress, 11883);
    client.setCallback(callback);
    
   if (client.connect(mqttAdress, mqttUserName, mqttPassword)) {
