@@ -8,7 +8,7 @@ if __name__ == "__main__":
     config = Configurations()
     tunnel = SshTunnel(config)
     handler = ImageHandler(config, tunnel)
-    camera = CameraManager(1, config)
+    camera = CameraManager(0, config)
 
     if config.ssh_tunneling is True:
         try:
@@ -18,5 +18,6 @@ if __name__ == "__main__":
 
     try:
         MqttManager(camera, config, handler)
-    except:
+    except Exception as e:
+        print(e)
         exit(-1)

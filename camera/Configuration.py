@@ -3,7 +3,7 @@ class Configurations:
     farmbot_id = "0"
 
     mqtt_host = "****"
-    mqtt_username = "****"
+    mqtt_port = 11883
     mqtt_password = "****"
 
     ssh_tunneling = True

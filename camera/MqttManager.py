@@ -19,15 +19,15 @@ class MqttManager:
         self.client.on_message = self.on_message
 
         self.client.username_pw_set(self.config.mqtt_username, self.config.mqtt_password)
-        self.client.connect(self.config.mqtt_host)
+        self.client.connect(host=self.config.mqtt_host, port=self.config.mqtt_port)
         self.client.loop_forever()
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             print("Connection complete")
-            self.client.subscribe(f"farmbot/{self.config.farmbot_id}/camera")
+            self.client.subscribe(f"sensor/{self.config.farmbot_id}/camera")
         else:
-            print('Error code: ' + rc)
+            print('Error code: ' + str(rc))
 
     def on_message(self, client, userdata, msg):
         success, image = self.camera.take_picture()
@@ -44,7 +44,7 @@ class MqttManager:
                 "error": "Camera error"
             }
 
-        client.publish(f"farmbot/{self.config.farmbot_id}/logs", json.dumps(mqtt_message))
+        client.publish(f"sensor/{self.config.farmbot_id}/logs", json.dumps(mqtt_message))
 
         if success is True:
             self.imageHandler.addImage((random_id, image))

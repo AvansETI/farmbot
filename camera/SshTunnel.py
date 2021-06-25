@@ -9,7 +9,8 @@ class SshTunnel:
             (config.ssh_host, config.ssh_port),
             ssh_username=config.ssh_username,
             ssh_password=config.ssh_password,
-            remote_bind_address=('192.168.5.22', 80),
+            remote_bind_address=('192.168.5.22', 3000),
+            local_bind_address=('127.0.0.1', 3000)
         )
 
     def connectTunnel(self):
