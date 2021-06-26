@@ -10,7 +10,7 @@ class LogbookProvider with ChangeNotifier{
   }
 
   //Method fot getting the logbook items
-  Future<void> getAndSetLogbookItems(){
+  Future<void> getAndSetLogbookItems() async{
     this._logbookItems.add(new LogItem(time: new DateTime(2021, 6 ,7 , 8, 0), event: "Moved to position x:200, y:200, z:0 and took picture", status: "Succeed"));
     this._logbookItems.add(new LogItem(time: new DateTime(2021, 6 ,7 , 8, 1), event: "Moved to position x:200, y:300, z:0 and took picture", status: "Succeed"));
     this._logbookItems.add(new LogItem(time: new DateTime(2021, 6 ,7 , 8, 2), event: "Moved to position x:200, y:400, z:0 and took picture", status: "Succeed"));

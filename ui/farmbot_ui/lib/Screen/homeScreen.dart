@@ -1,6 +1,7 @@
 //Homescreen of the Farmbot ui
 import 'package:farmbot_ui/Model/logItem.dart';
 import 'package:farmbot_ui/Provider/LogbookProvider.dart';
+import 'package:farmbot_ui/Provider/controlProvider.dart';
 import 'package:farmbot_ui/Screen/logbook.dart';
 import 'package:farmbot_ui/widget/LogbookItem.dart';
 import 'package:farmbot_ui/widget/drawer.dart';
@@ -56,6 +57,29 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 
                 children: [
+                  Row(children: [
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: () => Provider.of<ControlProvider>(context, listen: false).startDataSequence(context),
+                        child: Text("Start camera sequence"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                          padding: EdgeInsets.all(16.0),
+                          
+                        ),
+                      )),
+                      Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: () => Provider.of<ControlProvider>(context, listen: false).startWaterSequence(context),
+                        child: Text("Start water sequence"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                          padding: EdgeInsets.all(16.0),
+                        ),
+                      ))
+                  ],),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(children: [
