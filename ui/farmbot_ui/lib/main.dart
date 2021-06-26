@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // is not restarted.
         primarySwatch: Colors.green,
+        backgroundColor: Colors.green[50],
       ),
       home: HomeScreen(),
       //define routes in app scope
