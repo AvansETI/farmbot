@@ -1,0 +1,27 @@
+version: '3.3' # specify docker-compose version
+
+services:
+  farmbot_api:
+    restart: always
+    container_name: farmbot_api
+    image: farmbot_api:latest
+    ports:
+      - 3000:3000
+    environment:
+      - MFB_USER=
+      - MFB_PASSWORD=
+      - PORT=
+      - API_URL=
+      - DB_URL=
+      - DB_USER=
+      - DB_PASSWORD=
+      - BROKER_URL=
+      - BROKER_USER=
+      - BROKER_PASSWORD=
+    networks:
+      - farmbot
+  
+networks:
+  farmbot:
+    external: true
+  
