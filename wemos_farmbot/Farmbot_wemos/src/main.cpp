@@ -30,18 +30,18 @@ int resetPin = D6;
 int reset;
 
 //Credentials of the accespoint that is being used to configure wifi.
-char *dev_id = "th_001";
-char *pwd = "FarmbotAppels";
+char *dev_id = "****";
+char *pwd = "****";
 
 //MQTT adres and credentials
-char *mqttAdress = "sendlab.nl";
-char *mqttUserName = "farmbot_sensor";
-char *mqttPassword = "F@rmB0t!@sensor";
+char *mqttAdress = "*****";
+char *mqttUserName = "*****";
+char *mqttPassword = "****";
 
 //MQTT topics to trigger and send data
-char *farmbot_id = "device_10816";
-char *receiveTopic = "sensor/device_10816/controls";
-char *sendTopic = "sensor/device_10816/measurement";
+char *farmbot_id = "device_0";
+char *receiveTopic = "****";
+char *sendTopic = "****";
 
 
 WiFiClient espClient;
