@@ -26,7 +26,7 @@ export default class CameraClient {
       reads out the messages on the MQTT broker for the camera and the measurements.
   */
   onConnect() {
-    this.client.subscribe([`sensor/${this.farmbotId}/camera`, `sensor/${this.farmbotId}/measurement`], (err) => {
+    this.client.subscribe([`sensor/${this.farmbotId}/logs`, `sensor/${this.farmbotId}/measurement`], (err) => {
       if (err) {
         console.log("error subscribing");
       }
@@ -34,7 +34,6 @@ export default class CameraClient {
       this.client.on("message", (topic, message) => {
         this.onHandleTopics(topic, message);
       });
-
     });
   }
 
@@ -42,25 +41,6 @@ export default class CameraClient {
       Handle the right message based on the incoming topic.
   */
   onHandleTopics(topic, message) {
-    if (topic === `sensor/${this.farmbotId}/camera`)
-        this.onCameraMessage(message);
-    if (topic === `sensor/${this.farmbotId}/measurement`)
-        this.onMeasurementMessage(message);
-  }
-
-  /*  onCameraMessage(message)
-      Create a response message of the Camera message
-  */
-  onCameraMessage(message) {
-    if (this.responseFunction) {
-      this.responseFunction(message);
-    }
-  }
-
-/*  onMeasurementMessage(message)
-    Create a response message of the Measurement message
-*/
-  onMeasurementMessage(message) {
     if (this.responseFunction) {
       this.responseFunction(message);
     }
@@ -73,6 +53,7 @@ export default class CameraClient {
   takePicture() {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
+        this._removeResponseFunction();
         return reject("Camera did not respond within 20 seconds");
       }, 20000);
 
@@ -81,7 +62,7 @@ export default class CameraClient {
         return resolve(data);
       });
 
-      this.client.publish(`sensor/${this.farmbotId}/logs`, "");
+      this.client.publish(`sensor/${this.farmbotId}/camera`, "");
     });
   }
 
@@ -92,6 +73,7 @@ export default class CameraClient {
   receiveMeasurements() {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
+        this._removeResponseFunction();
         return reject("Sensor did not respond within 20 seconds");
       }, 20000);
 

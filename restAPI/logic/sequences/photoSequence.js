@@ -94,17 +94,29 @@ export default class PhotoSequence {
             z: 0,
             speed: 100,
           });
-
-          const responseMeasurement = (await this.cameraClient.receiveMeasurements()).toString();
-          console.log(responseMeasurement);
-          const responseCamera = (await this.cameraClient.takePicture()).toString();
-          console.log(responseCamera);
-
-          savePlant(this.points[pointIndex], responseCamera, responseMeasurement);
-
         } catch (err) {
           console.log(err);
         }
+        
+        let responseMeasurement = {}
+        try {
+          responseMeasurement = (await this.cameraClient.receiveMeasurements()).toString();
+          console.log(responseMeasurement);
+        }
+        catch (err) {
+          console.log(err)
+        }
+        
+        let responseCamera = {}
+        try {
+          responseCamera = (await this.cameraClient.takePicture()).toString();
+          console.log(responseCamera);
+        }
+        catch(err) {
+          console.log(err)
+        }
+      
+        savePlant(this.points[pointIndex], responseCamera, responseMeasurement);
       }
       await this.farmbot.moveAbsolute({ x: 0, y: 0, z: 0, speed: 100 });
       return resolve();
