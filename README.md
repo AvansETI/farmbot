@@ -105,18 +105,18 @@ This configuration data can be found in [main.cpp](wemos_farmbot/Farmbot_wemos/s
 char *dev_id = "****";
 char *pwd = "****";
 ```
-
+The dev_id and password are used to connect the WEMOS to the internet
 ```CPP
 char *mqttAdress = "****";
 char *mqttUserName = "*****";
 char *mqttPassword = "*****";
 ```
-
+This information is used for the MQTT data transition. A server is hosted on the broker, where the data is being send to from the sensor This data will then be accessible on a specific topic. For more information about MQTT, check out [MQTT.org](https://mqtt.org/) 
 ```CPP
 char *farmbot_id = "device_0";
 char *receiveTopic = "sensor/device_0/controls";
 char *sendTopic = "sensor/device_0/measurement";
 ```
-
+These are the topics that the data is being send and listened to. The Farmbot_id needs to correspond with the Farmbot id of where the rest API is connected to.
 
 ## Communication
