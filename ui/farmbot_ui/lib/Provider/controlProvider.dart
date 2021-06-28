@@ -12,8 +12,9 @@ class ControlProvider with ChangeNotifier{
   ///
   ///[context] is used to show the response snackbar
   Future<void> startDataSequence(BuildContext context) async{
+    Uri uri = Uri.parse(EndPoints.dataSequence);
     try{
-      var response = await http.get(Uri.parse(EndPoints.dataSequence)).timeout(Duration(seconds: 10));
+      var response = await http.get(uri).timeout(Duration(seconds: 10));
 
      String responseString = response.body;
      showSnackbar(context, responseString);

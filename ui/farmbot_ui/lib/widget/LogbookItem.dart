@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 //Layout class for a logbook item
 class LogbookItem extends StatefulWidget {
   //Model item that holds the data
-  final LogItem logItem;
+  final LogItem? logItem;
   
-  const LogbookItem({ Key key, this.logItem }) : super(key: key);
+  const LogbookItem({ Key? key, this.logItem }) : super(key: key);
 
   
 
@@ -21,8 +21,8 @@ class _LogbookItemState extends State<LogbookItem> {
       child: Column(
         children: [
           ListTile(
-            title: Text(widget.logItem.event),
-            subtitle: Text("Time: ${widget.logItem.time}, status: ${widget.logItem.status}"),
+            title: Text(widget.logItem!.event),
+            subtitle: Text("Time: ${widget.logItem!.time}, status: ${widget.logItem!.status}"),
           )
         ],
       ),

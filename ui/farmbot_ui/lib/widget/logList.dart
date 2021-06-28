@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LogbookList extends StatefulWidget {
-  const LogbookList({ Key key }) : super(key: key);
+  const LogbookList({ Key? key }) : super(key: key);
 
   @override
   _LogbookListState createState() => _LogbookListState();

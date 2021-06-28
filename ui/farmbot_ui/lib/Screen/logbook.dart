@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Logbook extends StatefulWidget {
   static const routeName = "/logbook";
-  const Logbook({ Key key }) : super(key: key);
+  const Logbook({ Key? key }) : super(key: key);
 
   @override
   _LogbookState createState() => _LogbookState();

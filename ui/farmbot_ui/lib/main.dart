@@ -1,6 +1,9 @@
 import 'package:farmbot_ui/Provider/LogbookProvider.dart';
+import 'package:farmbot_ui/Provider/controlProvider.dart';
+import 'package:farmbot_ui/Provider/plantProvider.dart';
 import 'package:farmbot_ui/Screen/homeScreen.dart';
 import 'package:farmbot_ui/Screen/logbook.dart';
+import 'package:farmbot_ui/Screen/plantScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +18,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       //Define providers in app scope
       providers: [
-        ChangeNotifierProvider.value(value: LogbookProvider(),)
+        ChangeNotifierProvider.value(value: LogbookProvider(),),
+        ChangeNotifierProvider.value(value: ControlProvider(),),
+        ChangeNotifierProvider.value(value: PlantProvider(),),
       ],
       child: MaterialApp(
       title: 'Farmbot UI',
@@ -29,6 +34,7 @@ class MyApp extends StatelessWidget {
       routes: {
         HomeScreen.routeName: (ctx) => HomeScreen(),
         Logbook.routeName: (ctx) => Logbook(),
+        PlantScreen.routeName: (ctx) => PlantScreen(),
       },
     ),
     );

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "";
-  const HomeScreen({ Key key }) : super(key: key);
+  const HomeScreen({ Key? key }) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isInit = false;
   bool _isLoading = false;
-  LogItem _lastLogItem;
+  LogItem? _lastLogItem;
 
  @override
   Future<void> didChangeDependencies()async{
@@ -60,23 +60,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(children: [
                     Expanded(
                       flex: 1,
-                      child: ElevatedButton(
-                        onPressed: () => Provider.of<ControlProvider>(context, listen: false).startDataSequence(context),
-                        child: Text("Start camera sequence"),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green,
-                          padding: EdgeInsets.all(16.0),
-                          
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => Provider.of<ControlProvider>(context, listen: false).startDataSequence(context),
+                          child: Text("Start camera sequence"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                            padding: EdgeInsets.all(16.0),
+                            
+                          ),
                         ),
                       )),
                       Expanded(
                       flex: 1,
-                      child: ElevatedButton(
-                        onPressed: () => Provider.of<ControlProvider>(context, listen: false).startWaterSequence(context),
-                        child: Text("Start water sequence"),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green,
-                          padding: EdgeInsets.all(16.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => Provider.of<ControlProvider>(context, listen: false).startWaterSequence(context),
+                          child: Text("Start water sequence"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                            padding: EdgeInsets.all(16.0),
+                          ),
                         ),
                       ))
                   ],),

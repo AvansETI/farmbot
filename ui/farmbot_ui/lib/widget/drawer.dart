@@ -1,6 +1,8 @@
 import 'package:farmbot_ui/Screen/homeScreen.dart';
 import 'package:farmbot_ui/Screen/logbook.dart';
+import 'package:farmbot_ui/Screen/plantScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //Navigation Menu
 class AppDrawer extends StatefulWidget {
@@ -39,8 +41,12 @@ class _AppDrawerState extends State<AppDrawer> {
                   title: Text("Logbook"),
                   onTap: () => Navigator.of(context).pushNamed(Logbook.routeName),
                   ),
+                  ListTile(
+                  leading: FaIcon(FontAwesomeIcons.seedling),
+                  title: Text("Plants"),
+                  onTap: () => Navigator.of(context).pushNamed(PlantScreen.routeName),
+                  ),
                     
-                
                         ],
                       )
               
