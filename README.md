@@ -6,7 +6,6 @@ This project is created for autonomous data collection on a Farmbot.
 2. [Technologies](#technologies)
 3. [Installation](#installation)
 4. [Configuration](#configuration)
-5. [Communication](#communication)
 
 ## General Info
 The following project is created to set a step into the right direction for autonomous data collections using a Farmbot.
@@ -32,12 +31,23 @@ Hardware:
 * [USB-endoscope](https://www.amazon.nl/USB-endoscoop-waterdichte-borescope-inspectiecamera-megapixels-micro-inspectiecamera/dp/B08ZMDPKWW/ref=sr_1_4?__mk_nl_NL=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=5mp+endoscoop+usb&qid=1619431155&sr=8-4)
 
 ## Installation
-
+### REST API
 Use node package manager [npm](https://docs.npmjs.com/cli/v7/commands/npm-install) to install dependencies for the REST API
 
 ```bash
 npm install farmbot cors mongoose cron body-parser express axios mqtt
 ```
+
+###  Camera Module
+The following packages are used: 
+
+* paho-mqtt
+* opencv-python
+* requests
+* sshtunnel
+
+It is also possible to install the package with the included requirements.txt 
+
 ## Configuration
 ### REST API
 The configuration file for the rest API can be found in [config.js](restAPI/config.js)
@@ -82,22 +92,10 @@ This information is used for the MQTT data transition. A server is hosted on the
 
 The configuration file for the camera module can be found in [Configuration.py](camera/Configuration.py)
 
+
 The camera module is built to run on any linux distrobution that have systemd installed and configured. It is tested to run on a Raspberry Pi 4 or Jetson nano. Other Hardware could work aslong it has a usb possibilities. 
 It is also possible to run this on your laptop / desktop aslong it has a camera attached to it. 
 
-
-## Installation ##
-
-The following packages are used: 
-
-* paho-mqtt
-* opencv-python
-* requests
-* sshtunnel
-
-It is also possible to install the package with the included requirements.txt 
-
-## configuration ##
 
 To configure the camera module, a few settings has to be configured.
 
@@ -126,7 +124,7 @@ This is information is needed for the mqtt broker. So the api can communicate li
 <<<<<<< HEAD
 This is information is for the sshtunnel in case the api is not reachable from the internet. Set ssh_tunneling to true incase.
 
-## Systemd service ##
+### Systemd service
 
 In case you want to install this python script as service. You have to follow the following instructions:
 
@@ -173,6 +171,3 @@ char *receiveTopic = "sensor/device_0/controls";
 char *sendTopic = "sensor/device_0/measurement";
 ```
 These are the topics that the data is being send and listened to. The Farmbot_id needs to correspond with the Farmbot id of where the rest API is connected to.
-
-
-## Communication
