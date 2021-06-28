@@ -1,0 +1,27 @@
+﻿@page 
+@{
+    @functions
+    {   
+        public string Message { get; set; }
+
+        public void OnGet()
+        {
+            Message = "Resultaat";
+        }
+
+        public void OnPost()
+        {
+            Message = MachineLearning.getInstance().classify(); 
+        }
+    }
+}
+
+<div class="text-center">
+    <script>
+        document.getElementById("clickMe").onclick = function () { window.location.reload(); };
+    </script>
+    
+    <form method="post"><button style="font-family: 'Tahoma'; font-size: large; margin:10px;" class="btn btn-outline-secondary" id="clickMe">Klik om een voorspelling te doen</button></form>
+    <img src="assets/images/cam.jpg" style="border:double; height:360px; width:640px; margin:20px; object-fit:none" alt="Sample Photo"/>
+    <p style="font-family: 'Tahoma'; font-size: large">@Message</p>
+</div>
