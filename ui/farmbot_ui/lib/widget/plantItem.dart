@@ -3,6 +3,11 @@ import 'package:farmbot_ui/values/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+///Class that generates the layout of a plant item in the list of the dataset.
+///
+///The list of the datasets generates a list of these objects, but with different data.
+///
+///[plant] in constructor to tell the widget wich data it needs to fill in.
 class PlantItem extends StatelessWidget {
   final PlantModel plant;
   const PlantItem({Key? key, required this.plant}) : super(key: key);

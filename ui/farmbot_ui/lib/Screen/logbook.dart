@@ -1,7 +1,7 @@
 import 'package:farmbot_ui/widget/drawer.dart';
 import 'package:farmbot_ui/widget/logList.dart';
 import 'package:flutter/material.dart';
-
+//Logbook screen of the Farmbot ui
 class Logbook extends StatefulWidget {
   static const routeName = "/logbook";
   const Logbook({ Key? key }) : super(key: key);

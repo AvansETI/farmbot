@@ -1,4 +1,4 @@
-//Homescreen of the Farmbot ui
+
 import 'package:farmbot_ui/Model/logItem.dart';
 import 'package:farmbot_ui/Provider/LogbookProvider.dart';
 import 'package:farmbot_ui/Provider/controlProvider.dart';
@@ -8,6 +8,7 @@ import 'package:farmbot_ui/widget/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//Homescreen of the Farmbot ui
 class HomeScreen extends StatefulWidget {
   static const routeName = "";
   const HomeScreen({ Key? key }) : super(key: key);

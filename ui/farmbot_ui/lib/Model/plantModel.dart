@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+//Model for the plant data
 class PlantModel{
   final String id;
   final int plantId;

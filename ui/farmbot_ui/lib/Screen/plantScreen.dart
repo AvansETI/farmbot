@@ -5,6 +5,7 @@ import 'package:farmbot_ui/widget/logList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//Screen for viewing the plant data of the Farmbot ui
 class PlantScreen extends StatefulWidget {
   static const routeName = "/plantscreen";
   const PlantScreen({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class _PlantScreenState extends State<PlantScreen> {
 
   String selectedKind = "";
 
+  //Get the available kind of plants and the first dataset
   @override
   void didChangeDependencies() async {
     List<String> tempKinds = [];
@@ -43,6 +45,7 @@ class _PlantScreenState extends State<PlantScreen> {
     super.didChangeDependencies();
   }
 
+  ///Method to refresh the dataset
   Future<void> _refreshPlants(BuildContext context) {
     return Provider.of<PlantProvider>(context, listen: false)
         .getPlants(selectedKind);

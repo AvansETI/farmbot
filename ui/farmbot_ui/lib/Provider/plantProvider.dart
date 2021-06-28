@@ -10,18 +10,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+//Provider to handle the data request of plants
 class PlantProvider with ChangeNotifier{
+  //Hold the data of the plants
   List<PlantModel> _plants = [];
+  //Hold the different plant kinds
   List<String> _plantKinds = [];
 
+  ///Get the plant data
   List<PlantModel> get plants{
     return [..._plants];
   }
 
+  ///Get the different kind of plants
   List<String> get plantKinds{
     return [..._plantKinds];
   }
 
+  ///Method to get all the plant data of a specific plant.
+  ///
+  ///[plantType] is used to determin the kind of plant.
   Future<void> getPlants(String plantType) async{
     _plants = [];
     final queryParameters = {
@@ -39,6 +47,7 @@ class PlantProvider with ChangeNotifier{
 
   }
 
+  ///Method to get the available plant kinds of the server.
   Future<List<String>> getPlantKinds() async{
     _plantKinds = [];
     final uri = Uri.parse(EndPoints.getTypes);
@@ -53,6 +62,7 @@ class PlantProvider with ChangeNotifier{
     return _plantKinds;
   }
 
+  ///Method to export the plant data in a json file.
   void exportPlantToFile(){
     String dateTime = DateFormat("dd:MM:yyyy-kk:mm").format(DateTime.now());
     final json = jsonEncode(_plants);

@@ -1,3 +1,7 @@
+
+///Class to hold the different API endpoints.
+///
+///Makes it more easy to perform endpoint changes.
 class EndPoints{
 
   //URL of API
