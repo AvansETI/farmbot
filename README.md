@@ -18,6 +18,7 @@ At last, a Proof of Concept is created for labeling the images using Machine Lea
 NOTE: the project is still pretty plain, meaning that the application is open for further development.
 
 ## Technologies
+Software: 
 * [Node JS](https://nodejs.org/en/)
 * [MQTT](https://mqtt.org/)
 * [MongoDB](https://www.mongodb.com/)
@@ -25,6 +26,8 @@ NOTE: the project is still pretty plain, meaning that the application is open fo
 * [Platform IO](https://platformio.org/)
 * [Flutter 2](https://flutter.dev/)
 
+Hardware: 
+* [Farmbot](https://farm.bot/)
 * [DHT11 sensor](https://learn.adafruit.com/dht)
 * [USB-endoscope](https://www.amazon.nl/USB-endoscoop-waterdichte-borescope-inspectiecamera-megapixels-micro-inspectiecamera/dp/B08ZMDPKWW/ref=sr_1_4?__mk_nl_NL=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=5mp+endoscoop+usb&qid=1619431155&sr=8-4)
 
@@ -37,8 +40,7 @@ npm install farmbot cors mongoose cron body-parser express axios mqtt
 ```
 ## Configuration
 ### REST API
-To configure the REST API, a few things need to be filled in: 
-
+The configuration file for the rest API can be found in [config.js](restAPI/config.js)
 ```javascript
     user: {
         email: process.env.MFB_USER || "****", //My.farm.bot email
@@ -61,7 +63,7 @@ This API URL is used to collect the field data about the plants within the field
 
 ```javascript
     database: {
-        address: process.env.DB_URL || "mongodb://127.0.0.1:27017/farmbot",
+        address: process.env.DB_URL || "mongodb://****",
         username: process.env.DB_USER || "****",
         password: process.env.DB_PASSWORD || "****"
 ```
@@ -77,6 +79,7 @@ This is the database information. For more information about how a MongoDB datab
 This information is used for the MQTT data transition. A server is hosted on the broker, where the data is being send to from the different sensors and camera data. This data will then be accessible on a specific topic. For more information about MQTT, check out [MQTT.org](https://mqtt.org/) 
 
 ### Camera Module
+The configuration file for the camera module can be found in [Configuration.py](camera/configuration.py)
 ```Python
     webhookUrl = "http://localhost:3000"
     farmbot_id = "0"
@@ -96,5 +99,24 @@ This information is used for the MQTT data transition. A server is hosted on the
     ssh_username = "****"
     ssh_password = "*****"
 ```
+### Sensor Module
+This configuration data can be found in [main.cpp](wemos_farmbot/Farmbot_wemos/src/main.cpp)
+```CPP
+char *dev_id = "****";
+char *pwd = "****";
+```
+
+```CPP
+char *mqttAdress = "****";
+char *mqttUserName = "*****";
+char *mqttPassword = "*****";
+```
+
+```CPP
+char *farmbot_id = "device_0";
+char *receiveTopic = "sensor/device_0/controls";
+char *sendTopic = "sensor/device_0/measurement";
+```
+
 
 ## Communication
