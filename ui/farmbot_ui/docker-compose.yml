@@ -1,0 +1,15 @@
+version: '3.3' # specify docker-compose version
+
+services:
+  farmbot_ui:
+    restart: always
+    container_name: farmbot_ui
+    image: farmbotui:latest
+    ports:
+      - 4040:4040
+    networks:
+      - farmbot
+  
+networks:
+  farmbot:
+    external: true
