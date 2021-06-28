@@ -100,8 +100,8 @@ export default class PhotoSequence {
         
         let responseMeasurement = {}
         try {
-          responseMeasurement = (await this.cameraClient.receiveMeasurements()).toString();
-          console.log(responseMeasurement);
+          responseMeasurement = (await this.cameraClient.receiveMeasurements())
+          console.log(responseMeasurement.toString());
         }
         catch (err) {
           console.log(err)
@@ -109,8 +109,8 @@ export default class PhotoSequence {
         
         let responseCamera = {}
         try {
-          responseCamera = (await this.cameraClient.takePicture()).toString();
-          console.log(responseCamera);
+          responseCamera = (await this.cameraClient.takePicture())
+          console.log(responseCamera.toString());
         }
         catch(err) {
           console.log(err)

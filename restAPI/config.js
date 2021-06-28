@@ -1,7 +1,7 @@
 export default {
     user: {
-        email: process.env.MFB_USER || "******",
-        password: process.env.MFB_PASSWORD || "******",
+        email: process.env.MFB_USER || "t.vandervelden5@student.avans.nl",
+        password: process.env.MFB_PASSWORD || "Farmbot1!"
     },
     http: {
         port: process.env.PORT || 3000,
@@ -15,8 +15,8 @@ export default {
         password: process.env.DB_PASSWORD || "****"
     },
     mqttCamera: {
-        broker: process.env.BROKER_URL || "mqtt://*****",
-        username: process.env.BROKER_USER || "****",
-        password: process.env.BROKER_PASSWORD || "*****",
+        broker: process.env.BROKER_URL || "mqtt://sendlab.nl:11883",
+        username: process.env.BROKER_USER || "farmbot_api",
+        password: process.env.BROKER_PASSWORD || "F@rmB0t!@API",
     },
 };
