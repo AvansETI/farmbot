@@ -14,9 +14,9 @@ import config from "./config.js";
 const app = express();
 
 mongoose.connect(config.database.address, {
-    // user: config.database.username,
-    // pass: config.database.password,
-    // authSource: "admin",
+    user: config.database.username,
+    pass: config.database.password,
+    authSource: "admin",
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -51,7 +51,7 @@ app.use(express.static("public"));
 
 await farmbotManager.connect();
 
-cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "*/60 10-22 * * *", async() => {
+cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "*/240 10-22 * * *", async() => {
     await farmbotManager.performDataSequence();
 });
 
@@ -73,4 +73,4 @@ app.listen(config.http.port, function() {
     console.log(`Server started at port: ${config.http.port} `);
 });
 
-farmbotManager.performDataSequence();
+// farmbotManager.performDataSequence();
