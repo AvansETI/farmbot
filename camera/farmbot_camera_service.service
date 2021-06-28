@@ -10,7 +10,7 @@ Description=Python Camera Module
 [Service]
 
 # Command to execute when the service is started
-ExecStart=usr/bin/python3.8 home/farmbot/camera_module/main.py
+ExecStart=usr/bin/python3 /usr/local/lib/camera_service/main.py
 
 # Disable Python's buffering of STDOUT and STDERR, so that output from the
 # service shows up immediately in systemd's logs

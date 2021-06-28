@@ -77,16 +77,39 @@ This is the database information. For more information about how a MongoDB datab
 This information is used for the MQTT data transition. A server is hosted on the broker, where the data is being send to from the different sensors and camera data. This data will then be accessible on a specific topic. For more information about MQTT, check out [MQTT.org](https://mqtt.org/) 
 
 ### Camera Module
+
+The camera module is built to run on any linux distrobution that have systemd installed and configured. It is tested to run on a Raspberry Pi 4 or Jetson nano. Other Hardware could work aslong it has a usb possibilities. 
+It is also possible to run this on your laptop / desktop aslong it has a camera attached to it. 
+
+
+## Installation ##
+
+The following packages are used: 
+
+* paho-mqtt
+* opencv-python
+* requests
+* sshtunnel
+
+It is also possible to install the package with the included requirements.txt 
+
+## configuration ##
+
+To configure the camera module, a few settings has to be configured.
+
 ```Python
     webhookUrl = "http://localhost:3000"
     farmbot_id = "0"
 ```
+This is information is needed to sends the image to the api. Farmbot_id is the Id from the web application so the api knows to which farmbot to send a request. The webhookurl is the address of the api.
 
 ```Python
     mqtt_host = "****"
     mqtt_port = 11883
     mqtt_password = "****"
 ```
+This is information is needed for the mqtt broker. So the api can communicate listen for request of the api and respond to it. 
+
 
 ```Python
     ssh_tunneling = True
@@ -96,5 +119,35 @@ This information is used for the MQTT data transition. A server is hosted on the
     ssh_username = "****"
     ssh_password = "*****"
 ```
+This is information is for the sshtunnel in case the api is not reachable from the internet. Set ssh_tunneling to true incase.
+
+## Systemd service ##
+
+In case you want to install this python script as service. You have to follow the following instructions:
+
+Service file:
+
+`
+$ sudo mv <path of project>/farmbot_camera_service.service /etc/systemd/system/
+$ sudo chown root:root /etc/systemd/system/farmbot_camera_service.service
+$ sudo chmod 644 /etc/systemd/system/farmbot_camera_service.service
+`
+
+Project files:
+
+`
+$ sudo mkdir /usr/local/lib/camera_service
+$ sudo mv ~/path/to/your/python_demo_service.py <path of project>
+$ sudo chown <root_user>:<root_user>  /usr/local/lib/camera_service/main.py
+$ sudo chmod 644 /usr/local/lib/camera_service/main.py
+`
+
+Start service and enable:
+
+`
+$ sudo systemctl enable farmbot_camera_service
+$ sudo systemctl start farmbot_camera_service
+`
+
 
 ## Communication
