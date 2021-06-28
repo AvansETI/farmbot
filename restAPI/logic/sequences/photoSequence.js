@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 import { savePlant } from "./../../database/database.js";
 
@@ -85,7 +85,6 @@ export default class PhotoSequence {
   */
   performAction() {
     return new Promise(async (resolve, reject) => {
-
       for (const pointIndex in this.points) {
         try {
           await this.farmbot.moveAbsolute({
@@ -97,26 +96,32 @@ export default class PhotoSequence {
         } catch (err) {
           console.log(err);
         }
-        
-        let responseMeasurement = {}
+
+        let responseMeasurement = {};
         try {
-          responseMeasurement = (await this.cameraClient.receiveMeasurements())
+          responseMeasurement = await this.cameraClient.receiveMeasurements();
           console.log(responseMeasurement.toString());
+        } catch (err) {
+          console.log(err);
         }
-        catch (err) {
-          console.log(err)
-        }
-        
-        let responseCamera = {}
+
+        let responseCamera = {};
         try {
-          responseCamera = (await this.cameraClient.takePicture())
+          responseCamera = await this.cameraClient.takePicture();
           console.log(responseCamera.toString());
+        } catch (err) {
+          console.log(err);
         }
-        catch(err) {
-          console.log(err)
+
+        try {
+          savePlant(
+            this.points[pointIndex],
+            responseCamera,
+            responseMeasurement
+          );
+        } catch (err) {
+          console.log(err);
         }
-      
-        savePlant(this.points[pointIndex], responseCamera, responseMeasurement);
       }
       await this.farmbot.moveAbsolute({ x: 0, y: 0, z: 0, speed: 100 });
       return resolve();
