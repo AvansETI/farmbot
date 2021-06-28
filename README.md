@@ -79,7 +79,7 @@ This is the database information. For more information about how a MongoDB datab
 This information is used for the MQTT data transition. A server is hosted on the broker, where the data is being send to from the different sensors and camera data. This data will then be accessible on a specific topic. For more information about MQTT, check out [MQTT.org](https://mqtt.org/) 
 
 ### Camera Module
-The configuration file for the camera module can be found in [Configuration.py](camera/configuration.py)
+The configuration file for the camera module can be found in [Configuration.py](camera/Configuration.py)
 ```Python
     webhookUrl = "http://localhost:3000"
     farmbot_id = "0"
