@@ -121,8 +121,8 @@ This is information is needed for the mqtt broker. So the api can communicate li
     ssh_username = "****"
     ssh_password = "*****"
 ```
-<<<<<<< HEAD
-This is information is for the sshtunnel in case the api is not reachable from the internet. Set ssh_tunneling to true incase.
+
+This is information is for the sshtunnel in case the api is not reachable from the internet. Set ssh_tunneling to true.
 
 ### Systemd service
 
