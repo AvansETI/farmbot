@@ -110,12 +110,14 @@ To configure the camera module, a few settings has to be configured.
 ```Python
     webhookUrl = "http://localhost:3000"
     farmbot_id = "0"
+    camera_id = 1
 ```
 This is information is needed to sends the image to the api. Farmbot_id is the Id from the web application so the api knows to which farmbot to send a request. The webhookurl is the address of the api.
 
 ```Python
     mqtt_host = "****"
     mqtt_port = 11883
+    mqtt_username = "****"
     mqtt_password = "****"
 ```
 This is information is needed for the mqtt broker. So the api can communicate listen for request of the api and respond to it. 
@@ -123,34 +125,38 @@ This is information is needed for the mqtt broker. So the api can communicate li
 
 ```Python
     ssh_tunneling = True
-    ssh_host = "*****"
-    ssh_port = 0
+    ssh_host = "****"
+    ssh_port = 10022
 
     ssh_username = "****"
-    ssh_password = "*****"
+    ssh_password = "****"
+
+    ssh_remote_address = "****"
+    ssh_remote_port = 3000
+    ssh_local_port = 3000
 ```
 
 This is information is for the sshtunnel in case the api is not reachable from the internet. Set ssh_tunneling to true.
 
 ### Systemd service
 
-In case you want to install the python script from the camera module as a service, you will have to follow the following instructions:
+In case you want to install this python script as service. You have to follow the following instructions:
 
 Service file:
 
 `
-$ sudo mv <path of project>/farmbot_camera_service.service /etc/systemd/system/
-$ sudo chown root:root /etc/systemd/system/farmbot_camera_service.service
-$ sudo chmod 644 /etc/systemd/system/farmbot_camera_service.service
+    $ sudo mv <path of project>/farmbot_camera_service.service /etc/systemd/system/
+    $ sudo chown root:root /etc/systemd/system/farmbot_camera_service.service
+    $ sudo chmod 644 /etc/systemd/system/farmbot_camera_service.service
 `
 
 Project files:
 
 `
-$ sudo mkdir /usr/local/lib/camera_service
-$ sudo mv ~/path/to/your/python_demo_service.py <path of project>
-$ sudo chown <root_user>:<root_user>  /usr/local/lib/camera_service/main.py
-$ sudo chmod 644 /usr/local/lib/camera_service/main.py
+    $ sudo mkdir /usr/local/lib/camera_service
+    $ sudo mv ~/path/to/your/python_demo_service.py <path of project>
+    $ sudo chown <root_user>:<root_user>  /usr/local/lib/camera_service/main.py
+    $ sudo chmod 644 /usr/local/lib/camera_service/main.py
 `
 
 Start service and enable:
