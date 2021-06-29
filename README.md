@@ -144,27 +144,27 @@ In case you want to install this python script as service. You have to follow th
 
 Service file:
 
-`
+```
     $ sudo mv <path of project>/farmbot_camera_service.service /etc/systemd/system/
     $ sudo chown root:root /etc/systemd/system/farmbot_camera_service.service
     $ sudo chmod 644 /etc/systemd/system/farmbot_camera_service.service
-`
+```
 
 Project files:
 
-`
+```
     $ sudo mkdir /usr/local/lib/camera_service
     $ sudo mv ~/path/to/your/python_demo_service.py <path of project>
     $ sudo chown <root_user>:<root_user>  /usr/local/lib/camera_service/main.py
     $ sudo chmod 644 /usr/local/lib/camera_service/main.py
-`
+```
 
 Start service and enable:
 
-`
+```
 $ sudo systemctl enable farmbot_camera_service
 $ sudo systemctl start farmbot_camera_service
-`
+```
 
 ### Sensor Module
 This configuration data can be found in [main.cpp](wemos_farmbot/Farmbot_wemos/src/main.cpp)
