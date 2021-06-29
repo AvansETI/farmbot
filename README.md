@@ -126,7 +126,7 @@ This is information is for the sshtunnel in case the api is not reachable from t
 
 ### Systemd service
 
-In case you want to install this python script as service. You have to follow the following instructions:
+In case you want to install the python script from the camera module as a service, you will have to follow the following instructions:
 
 Service file:
 
@@ -159,15 +159,33 @@ char *dev_id = "****";
 char *pwd = "****";
 ```
 The dev_id and password are used to connect the WEMOS to the internet
+
 ```CPP
 char *mqttAdress = "****";
 char *mqttUserName = "*****";
 char *mqttPassword = "*****";
 ```
 This information is used for the MQTT data transition. A server is hosted on the broker, where the data is being send to from the sensor This data will then be accessible on a specific topic. For more information about MQTT, check out [MQTT.org](https://mqtt.org/) 
+
 ```CPP
 char *farmbot_id = "device_0";
 char *receiveTopic = "sensor/device_0/controls";
 char *sendTopic = "sensor/device_0/measurement";
 ```
 These are the topics that the data is being send and listened to. The Farmbot_id needs to correspond with the Farmbot id of where the rest API is connected to.
+
+### Web application
+This configuration data can be found in [endpoints.dart](ui/farmbot_ui/lib/values/endpoints.dart)
+```dart
+  static const String baseUrl = "http://127.0.0.1:3000";
+  static const String baseUrlWithout = "127.0.0.1:3000";
+
+  static const String dataSequence = baseUrl + "/datasequence";
+  static const String waterSequence = baseUrl + "/watersequence";
+  static const String getTypes = baseUrl + "/Plant/type";
+  static const String getPlantByType = "/plant/plant_type";
+  static const String getImage = baseUrl + "/image/";
+```
+The baseURL is used to connect to the server where the REST API is running on (in this case, it is port 3000 with the ipaddress of localhost, which is always 127.0.0.1)
+The strings are based on the topics that the API is using (see [main.js](restAPI/main.js) and [plantEndpoint.js](restAPI/endpoints/plantEndpoint.js) for the topics and the corresponding functions). 
+NOTE: this only needs to be changed when the endPoints in the REST API change.
