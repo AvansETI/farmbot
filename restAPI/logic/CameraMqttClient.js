@@ -54,12 +54,12 @@ export default class CameraClient {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         this._removeResponseFunction();
-        return reject("Camera did not respond within 20 seconds");
+        reject("Camera did not respond within 20 seconds");
       }, 20000);
 
       this._addResponseFunction((data) => {
         this._removeResponseFunction();
-        return resolve(data);
+        resolve(data);
       });
 
       this.client.publish(`sensor/${this.farmbotId}/camera`, "");
@@ -74,12 +74,12 @@ export default class CameraClient {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         this._removeResponseFunction();
-        return reject("Sensor did not respond within 20 seconds");
+        reject("Sensor did not respond within 20 seconds");
       }, 20000);
 
       this._addResponseFunction((data) => {
         this._removeResponseFunction();
-        return resolve(data);
+        resolve(data);
       });
 
       this.client.publish(`sensor/${this.farmbotId}/controls`, "");

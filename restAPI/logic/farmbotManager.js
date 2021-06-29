@@ -67,7 +67,9 @@ export default class FarmbotManager {
       Starts the sequence of collecting the data out of the field
   */
   performDataSequence() {
+    console.log(this.isExecuting)
     return new Promise(async (resolve, reject) => {
+      console.log(this.isExecuting)
       if (!this.isExecuting) {
         console.log("Starting Data Sequence");
         this.isExecuting = true;
@@ -77,12 +79,17 @@ export default class FarmbotManager {
           this.cameraMqttClient,
           this.farmbotInformation
         );
-
-        await sequence.performSequence();
-
+        
+        try {
+          await sequence.performSequence();
+        }
+        catch(err) {
+          console.log(err)
+        }
+       
         this.isExecuting = false;
       }
-      return resolve();
+      resolve();
     });
   }
 
@@ -109,7 +116,7 @@ export default class FarmbotManager {
         this.isExecuting = false;
       }
 
-      return resolve();
+      resolve();
     });
   }
 }
@@ -278,7 +285,7 @@ class WaterSequence {
       await this.farmbot.togglePin({ pin_number: 8 });
       setTimeout(async () => {
         await this.farmbot.togglePin({ pin_number: 8 });
-        return resolve();
+        resolve();
       }, milliseconds);
     });
   }
@@ -305,7 +312,7 @@ class WaterSequence {
 
       await this.putBackTool();
 
-      return resolve();
+      resolve();
     });
   }
 }

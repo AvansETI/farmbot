@@ -40,12 +40,12 @@ export default class PhotoSequence {
         this.farmbot.on(
           "status",
           (data, eventname) => {
-            return resolve(data);
+            resolve(data);
           },
           true
         );
       } catch (err) {
-        return reject(err);
+        reject(err);
       }
     });
   }
@@ -134,7 +134,7 @@ export default class PhotoSequence {
         console.log(err);
       }
 
-      return resolve();
+      resolve();
     });
   }
 }
