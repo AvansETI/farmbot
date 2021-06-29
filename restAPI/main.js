@@ -14,9 +14,9 @@ import config from "./config.js";
 const app = express();
 
 mongoose.connect(config.database.address, {
-    user: config.database.username,
-    pass: config.database.password,
-    authSource: "admin",
+    // user: config.database.username,
+    // pass: config.database.password,
+    // authSource: "admin",
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -51,12 +51,16 @@ app.use(express.static("public"));
 
 await farmbotManager.connect();
 
-cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "*/240 10-22 * * *", async() => {
+cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "0 10 10-23/4 * * *", async() => {
+    console.log("Starting cronjob data sequence");
     await farmbotManager.performDataSequence();
+    console.log("Stopping cronjob data sequence");
 });
 
-cron.schedule(process.env.WATERSEQUENCE_SCHEDULE || "* 8 * * * ", async() => {
+cron.schedule(process.env.WATERSEQUENCE_SCHEDULE || "0 0 8 * * *", async() => {
+    console.log("Starting cronjob water sequence")
     await farmbotManager.performWaterSequence();
+    console.log("Stopping cronjob water sequence")
 });
 
 app.get("/dataSequence", (req, res) => {

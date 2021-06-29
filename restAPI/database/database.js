@@ -12,10 +12,10 @@ function savePlant(point, responseCamera, responseMeasurement) {
     planted_at: point.planted_at, 
     
     image_date : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+'T'+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(),
-    image_id : JSON.parse(responseCamera).messageId.toString(),
+    image_id : responseCamera.hasOwnProperty("messageId") ? responseCamera.messageId : null,
     
-    humidity: JSON.parse(responseMeasurement).humidity.toString(),
-    temperature: JSON.parse(responseMeasurement).temperature.toString()
+    humidity: responseMeasurement.hasOwnProperty("humidity") ? responseMeasurement.humidity : null,
+    temperature: responseMeasurement.hasOwnProperty("temperature") ? responseMeasurement.temperature : null,
   });
 
   plant.save(function (err, saved) {

@@ -99,16 +99,20 @@ export default class PhotoSequence {
 
         let responseMeasurement = {};
         try {
-          responseMeasurement = await this.cameraClient.receiveMeasurements();
-          console.log(responseMeasurement.toString());
+          responseMeasurement = JSON.parse(
+            (await this.cameraClient.receiveMeasurements()).toString()
+          );
+          console.log(responseMeasurement);
         } catch (err) {
           console.log(err);
         }
 
         let responseCamera = {};
         try {
-          responseCamera = await this.cameraClient.takePicture();
-          console.log(responseCamera.toString());
+          responseCamera = JSON.parse(
+            (await this.cameraClient.takePicture()).toString()
+          );
+          console.log(responseCamera);
         } catch (err) {
           console.log(err);
         }
@@ -123,7 +127,13 @@ export default class PhotoSequence {
           console.log(err);
         }
       }
-      await this.farmbot.moveAbsolute({ x: 0, y: 0, z: 0, speed: 100 });
+
+      try {
+        await this.farmbot.moveAbsolute({ x: 0, y: 100, z: 0, speed: 100 });
+      } catch (err) {
+        console.log(err);
+      }
+
       return resolve();
     });
   }

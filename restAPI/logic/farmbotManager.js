@@ -1,4 +1,3 @@
-
 import atob from "atob";
 global.atob = atob;
 
@@ -17,6 +16,8 @@ export default class FarmbotManager {
   farmbotInformation = {};
 
   cameraMqttClient = undefined;
+
+  isExecuting = false;
 
   constructor(email, password) {
     this.farmbotInformation.email = email;
@@ -66,22 +67,50 @@ export default class FarmbotManager {
       Starts the sequence of collecting the data out of the field
   */
   performDataSequence() {
-    const sequence = new PhotoSequence(
-      this.farmbot,
-      this.cameraMqttClient,
-      this.farmbotInformation,
-    );
+    return new Promise(async (resolve, reject) => {
+      if (!this.isExecuting) {
+        console.log("Starting Data Sequence");
+        this.isExecuting = true;
 
-    return sequence.performSequence();
+        const sequence = new PhotoSequence(
+          this.farmbot,
+          this.cameraMqttClient,
+          this.farmbotInformation
+        );
+
+        await sequence.performSequence();
+
+        this.isExecuting = false;
+      }
+      return resolve();
+    });
   }
 
   /*  performWaterSequence()
       Starts the sequence of watering all the plants within the field
   */
   performWaterSequence() {
-    const sequence = new WaterSequence(this.farmbot, this.farmbotInformation);
+    return new Promise(async (resolve, reject) => {
+      if (!this.isExecuting) {
+        console.log("Starting Water Sequence");
+        this.isExecuting = true;
 
-    return sequence.performWateringSequence();
+        const sequence = new WaterSequence(
+          this.farmbot,
+          this.farmbotInformation
+        );
+
+        try {
+          await sequence.performWateringSequence();
+        } catch (err) {
+          console.log(err);
+        }
+
+        this.isExecuting = false;
+      }
+
+      return resolve();
+    });
   }
 }
 
@@ -150,7 +179,7 @@ class WaterSequence {
 
   /*  filterPlants(locations)
       Creates a list of planted plants, sorted based on their coordinates.
-  */ 
+  */
   filterPlants(locations) {
     this.plants = locations.filter((point) => {
       return point.pointer_type === "Plant" && point.plant_stage === "planted";
