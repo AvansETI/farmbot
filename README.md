@@ -9,12 +9,20 @@ This project is created for autonomous data collection on a Farmbot.
 
 ## General Info
 The following project is created to set a step into the right direction for autonomous data collections using a Farmbot.
+
 This project allows the Farmbot to move autonomously (without human interference) and collect data from different kinds of crops within a field.
+
 This data will then be stored in a MongoDB database, where the data is accessible through a simple web interface.
+
 For this project, an external camera is being used for creating high-quality images.
+
 At last, a Proof of Concept is created for labeling the images using Machine Learning. This Proof of Concept shows that labeling images with data that is being collected is possible.
 
+
+
 NOTE: the project is still pretty plain, meaning that the application is open for further development.
+
+NOTE 2: the project its data is based on the data from the web application [My.farm.bot](https://my.farmbot.io/). This means some plants need to be seeded using the web application before this project can start collecting data from them.
 
 ## Technologies
 Software: 
