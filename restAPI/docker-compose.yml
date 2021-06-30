@@ -5,6 +5,8 @@ services:
     restart: always
     container_name: farmbot_api
     image: farmbot_api:latest
+    volumes:
+      - /home/farmbot/data/api/images:/usr/src/app/images
     ports:
       - 3000:3000
     environment:
