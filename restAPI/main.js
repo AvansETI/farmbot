@@ -51,7 +51,7 @@ app.use(express.static("public"));
 
 await farmbotManager.connect();
 
-cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "0 33 * * * *", async() => {
+cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "0 0 10-23/4 * * *", async() => {
     console.log("Starting cronjob data sequence");
     await farmbotManager.performDataSequence();
     console.log("Stopping cronjob data sequence");
