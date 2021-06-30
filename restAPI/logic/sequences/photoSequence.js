@@ -113,11 +113,7 @@ export default class PhotoSequence {
             (await this.cameraClient.takePicture()).toString()
           );
           console.log(responseCamera);
-        } catch (err) {
-          console.log(err);
-        }
 
-        try {
           savePlant(
             this.points[pointIndex],
             responseCamera,
