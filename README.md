@@ -263,7 +263,11 @@ python train.py --img 620 --batch 2 --epochs 50 --data data.yaml --weights yolov
 --weights is the parameter within a neural network that transforms input data within the network's hidden layers (in this case yolov5)\
 --decive the device used to train the data (in this case gpu)
 
-After the algorithm is trained, the following command is used to detect objects inside images:
+After the algorithm is trained, the best.pt (trained algorithm) file need to placed inside:
+``` 
+..\yolov5\
+```
+the following command is used to detect objects inside images:
 ```
 python detect.py --source .\farmbot\images\train\ --weights best.pt --img 1280
 ```
