@@ -32,6 +32,8 @@ Software:
 * [YOLO]()
 * [Platform IO](https://platformio.org/)
 * [Flutter 2](https://flutter.dev/)
+* [Tensorflow](https://www.tensorflow.org/)
+* [ML.NET](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet/)
 
 Hardware: 
 * [Farmbot](https://farm.bot/)
@@ -203,3 +205,68 @@ This configuration data can be found in [endpoints.dart](ui/farmbot_ui/lib/value
 The baseURL is used to connect to the server where the REST API is running on (in this case, it is port 3000 with the ipaddress of localhost, which is always 127.0.0.1)
 The strings are based on the topics that the API is using (see [main.js](restAPI/main.js) and [plantEndpoint.js](restAPI/endpoints/plantEndpoint.js) for the topics and the corresponding functions). 
 NOTE: this only needs to be changed when the endPoints in the REST API change.
+
+### Machine Learning
+## Tensorflow
+Images are needed to train the algorithm.
+The lables for the training data need to inside the: 
+```
+tags.tsv
+``` 
+Inside this file the images come first followed by the lables.
+The images as well as the labes file need to be placed inside: 
+```
+..\RazorPagesMovie\assets\images
+```
+The camera used for detection needs to be set inside the class Camera.cs.
+```
+cap = new VideoCapture(*camera*);
+```
+Once the algorithm is trained it can predict images using the selected camera.
+## YOLOV5
+
+To train data using yolo visual labeld images are needed.
+A good way to label data is by using 
+\*[Labelbox](https://labelbox.com/)
+The training data needs to be placed in:
+```
+..\yolov5\farmbot\images\train
+```
+The training labels needs to be placed in:
+```
+..\yolov5\farmbot\labels\train
+```
+A data.yaml is needed, is this placed in: 
+```
+\yolov5\data
+```
+This files needs to contain:
+- the file path for training
+- the file path for validation
+- the amount of lables the algorithm can choose from
+- the lable names
+```
+train: farmbot/images/train/
+val: farmbot/images/valid/
+
+nc: 3
+names: ['buxus', 'klimop', 'pannenkoek_plant'] 
+```
+To train the algorithm the following py command is used:
+```
+python train.py --img 620 --batch 2 --epochs 50 --data data.yaml --weights yolov5m6.pt --device 0
+```
+--img is the image quality\
+--batch is the amount of images it can use to train at the same time (using more computing power)\
+--epochs indicates the number of passes of the entire training dataset the machine learning algorithm has completed\
+--data the file with labels it can choose from and the training data path\
+--weights is the parameter within a neural network that transforms input data within the network's hidden layers (in this case yolov5)\
+--decive the device used to train the data (in this case gpu)
+
+After the algorithm is trained, the following command is used to detect objects inside images:
+```
+python detect.py --source .\farmbot\images\train\ --weights best.pt --img 1280
+```
+--source the file path for training data images\
+--weights the trained data file (in this case best.pt)\
+--img image size
