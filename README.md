@@ -109,6 +109,11 @@ It is also possible to run this on your laptop / desktop aslong it has a camera 
 
 To configure the camera module, a few settings has to be configured.
 
+In orde to let the camera operate on a Rapsberry pi addional packages has to be installed:
+```
+apt-get install ffmpeg libsm6 libxext6
+```
+
 ```Python
     webhookUrl = "http://localhost:3000"
     farmbot_id = "0"
@@ -133,9 +138,9 @@ This is information is needed for the mqtt broker. So the api can communicate li
     ssh_username = "****"
     ssh_password = "****"
 
-    ssh_remote_address = "****"
-    ssh_remote_port = 3000
-    ssh_local_port = 3000
+    ssh_remote_address = "****" # address of the remote server
+    ssh_remote_port = 3000 #port of the remote server
+    ssh_local_port = 3000 #port to use for sending information over ssh tunnel
 ```
 
 This is information is for the sshtunnel in case the api is not reachable from the internet. Set ssh_tunneling to true.
