@@ -297,12 +297,12 @@ class WaterSequence {
   */
   performAction() {
     return new Promise(async (resolve, reject) => {
-      try {
-        await this.pickUpTool();
-      }
-      catch(err) {
-        console.log(err)
-      }
+      // try {
+      //   await this.pickUpTool();
+      // }
+      // catch(err) {
+      //   console.log(err)
+      // }
 
       for (const plantIndex in this.plants) {
         await this.farmbot.moveAbsolute({
@@ -320,12 +320,12 @@ class WaterSequence {
         }
       }
 
-      try {
-        await this.putBackTool();
-      }
-      catch(err) {
-        console.log(err)
-      }
+      // try {
+      //   await this.putBackTool();
+      // }
+      // catch(err) {
+      //   console.log(err)
+      // }
       
       resolve();
     });
