@@ -142,6 +142,20 @@ class WaterSequence {
     const tools = await this.fetchTools();
     const locations = await this.fetchLocations();
 
+    if(tools == undefined){
+      console.log(Date.now())
+      console.log("Fetching of tools returned undefined object")
+      console.log("tools: " + tools)
+      return
+    }
+
+    if(locations == undefined){
+      console.log(Date.now())
+      console.log("Fetching of locations return undefined object")
+      console.log("locations: " + locations)
+      return
+    }
+
     this.filterPlants(locations);
     this.filterTools(tools, locations);
 
