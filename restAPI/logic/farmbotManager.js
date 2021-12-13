@@ -32,6 +32,7 @@ export default class FarmbotManager {
       });
 
       await this.farmbot.connect();
+      console.log("Connected to Farmbot")
       this.connectToCameraMqtt();
     }
   }

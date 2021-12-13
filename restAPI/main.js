@@ -21,6 +21,7 @@ mongoose.connect(config.database.address, {
     useUnifiedTopology: true,
 });
 
+console.log("Created connection with mongoose to mongoDB")
 
 const farmbotManager = new FarmbotManager(
     config.user.email,
@@ -50,6 +51,8 @@ app.use("/plant", plantEndpoint);
 app.use(express.static("public"));
 
 await farmbotManager.connect();
+
+
 
 cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "0 0 10-23/4 * * *", async() => {
     console.log("Starting cronjob data sequence");

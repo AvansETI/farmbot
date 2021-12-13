@@ -18,6 +18,7 @@ export default class CameraClient {
     });
 
     this.client.on("connect", () => {
+      console.log("Camera Client Connected")
       this.onConnect();
     });
   }
