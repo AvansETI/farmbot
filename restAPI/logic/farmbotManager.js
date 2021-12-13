@@ -55,6 +55,7 @@ export default class FarmbotManager {
       return true;
     } catch (err) {
       console.log("Error email or password invalid");
+      console.log(err)
       return false;
     }
   }
