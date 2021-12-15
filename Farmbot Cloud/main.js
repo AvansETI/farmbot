@@ -1,34 +1,23 @@
-const fs = require("fs");
-const Firestore = require('@google-cloud/firestore');
+const MediaStorage = require('./mediastorage')
+const DocumentStorage = require('./documentstorage')
+
+const config = require('./config')
+
+const fs = require("fs")
 const { v4: uuidv4 } = require('uuid');
 const express = require("express")
 const bodyParser = require("body-parser")
 
+// Setup of storage connections
+// var media = new MediaStorage('D:/Farmbot Credentials/farmbot-avans-cloud-firebase-adminsdk-r8r3d-9a5adaf0a5.json')
+var media = new MediaStorage(config.firebaseCredentialFilePath)
 
-const db = new Firestore({
-  projectId: 'farmbot-avans-cloud',
-  keyFilename: 'D:/Schooljaar4/Farmbot/farmbotfirebasecredentials.json',
-});
+// var documents = new DocumentStorage('D:/Farmbot Credentials/farmbot-avans-cloud-b127ccec038b.json')
+var documents = new DocumentStorage(config.firestoreCredentialFilePath)
 
-async function writePlant(image_id, plant_name, database){
-  const docRef = db.collection('Plants').doc(uuidv4());
-
-  await docRef.set({
-      image_id: image_id,
-      plant_name: plant_name,
-  });
-}
-
-async function printPlants(database){
-  const snapshot = await db.collection('Plants').get();
-  snapshot.forEach((doc) => {
-    console.log(doc.id, '=>', doc.data());
-  });
-}
-
-// Initialize express and define a port
+// Setup of image upload endpoint
 const app = express()
-const PORT = 3000
+const PORT = config.port
 // Tell express to use body-parser's JSON parsing
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: "application/json" }));
@@ -51,11 +40,13 @@ app.post("/image", (req, res) => {
       console.log(err);
       res.status(500).send(err);
     }
-    res.status(200).send();
   });
+
+  // File lookup in the document database
+
+  // Extract crop type
+
+  // Insert image into the crop directory
+
+  res.status(200).send();
 });
-
-
-//printPlants(db)
-
-
