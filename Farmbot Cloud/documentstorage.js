@@ -26,6 +26,20 @@ class DocumentStorage {
         });
     }
 
+    // Create a query against the collection for a specific image_id.
+    async searchImage(image_id) {
+        const plant_collection = this.db.collection('Plants');
+        const snapshot = await plant_collection.where('image_id', '==', image_id).get();
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            return;
+        }
+
+        return snapshot.docs[0].data()
+    }
+
+
+
 }
 
 module.exports = DocumentStorage;

@@ -22,11 +22,11 @@ const PORT = config.port
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: "application/json" }));
 app.use(
-    bodyParser.raw({
-        inflate: true,
-        limit: "15mb",
-        type: "image/*",
-    })
+  bodyParser.raw({
+    inflate: true,
+    limit: "15mb",
+    type: "image/*",
+  })
 );
 app.use(express.static("public"));
 // Start express on the defined port
@@ -43,10 +43,16 @@ app.post("/image", (req, res) => {
   });
 
   // File lookup in the document database
+  documents.searchImage(photoId).then((doc_data) => {
 
-  // Extract crop type
+    // Extract plant type
+    let plant_type = doc_data.plant_type
 
-  // Insert image into the crop directory
-
-  res.status(200).send();
+    // Insert image into the crop directory
+    let file = `${photoId}.jpg`
+    let targetdir = `${config.datasetTitle}/${plant_type}/`
+    media.uploadImage(file, targetdir)
+    // add status report on foto send for debugging and logging purposes
+    res.status(200).send();
+  })
 });

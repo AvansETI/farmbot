@@ -1,8 +1,8 @@
 import requests
 import cv2
 
-URL = "http://localhost:3000/image?messageId=biet"
-imgUrl = 'testimages/biet.jpg'
+URL = "http://localhost:3000/image?messageId=1234"
+imgUrl = 'Farmbot Cloud/testimages/biet.jpg'
 
 image = cv2.imread(imgUrl)
 
@@ -11,10 +11,11 @@ binary_image = image_jpg.tobytes()
 headers = {'Content-type': 'image/jpg'}
 
 try:
-    requests.post(
+    response = requests.post(
         url=URL,
         data=binary_image,
         headers=headers
     )
+    print(str(response))
 except Exception as e:
                 print(str(e))
