@@ -30,7 +30,16 @@ async function printPlants(database){
 const app = express()
 const PORT = 3000
 // Tell express to use body-parser's JSON parsing
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ type: "application/json" }));
+app.use(
+    bodyParser.raw({
+        inflate: true,
+        limit: "15mb",
+        type: "image/*",
+    })
+);
+app.use(express.static("public"));
 // Start express on the defined port
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
 

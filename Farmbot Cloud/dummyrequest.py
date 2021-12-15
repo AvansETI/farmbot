@@ -1,8 +1,8 @@
 import requests
 import cv2
 
-URL = "localhost:3000/image"
-imgUrl = 'testimages/rutte.jpg'
+URL = "http://localhost:3000/image?messageId=biet"
+imgUrl = 'testimages/biet.jpg'
 
 image = cv2.imread(imgUrl)
 
