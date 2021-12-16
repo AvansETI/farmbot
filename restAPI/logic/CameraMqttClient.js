@@ -25,6 +25,11 @@ export default class CameraClient {
       console.log("Camera Client Connected")
       this.onConnect();
     });
+
+    this.client.on("error", (error) => {
+      console.log("Camera Client MQTT Connection Error")
+      console.log(error)
+    })
   }
 
   /*  onConnect()
