@@ -53,6 +53,6 @@ app.post("/image", (req, res) => {
     let targetdir = `${config.datasetTitle}/${plant_type}/`
     media.uploadImage(file, targetdir)
     // add status report on foto send for debugging and logging purposes
-    res.status(200).send();
+    res.status(200).send(`Succesfully saved ${file} in ${targetdir}`);
   })
 });
