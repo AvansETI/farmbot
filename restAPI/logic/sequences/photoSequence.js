@@ -88,13 +88,14 @@ export default class PhotoSequence {
     return new Promise(async (resolve, reject) => {
       for (const pointIndex in this.points) {
         try {
+          console.log(`Farmbot moving to: (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
           await this.farmbot.moveAbsolute({
             x: this.points[pointIndex].x,
             y: this.points[pointIndex].y,
             z: 0,
             speed: 100,
           });
-          console.log(`Farmed bot moved to: (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
+          console.log(`Farmbot finished moving to: (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
         } catch (err) {
           console.log(err);
         }

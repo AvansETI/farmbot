@@ -19,7 +19,10 @@ function savePlant(point, responseCamera, responseMeasurement) {
   });
 
   plant.save(function (err, saved) {
-    if (err) return console.log(err);
+    if (err) {
+      return console.log("Something went wrong with saving via mongoose");
+      return console.log(err);
+    } 
     return console.log("Saved");
   });
 }
