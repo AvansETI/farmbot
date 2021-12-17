@@ -12,14 +12,15 @@ export default class CameraClient {
   constructor(farmbotId) {
     this.farmbotId = farmbotId;
 
-    console.log("Creating client object")
+    console.log("Creating client object with username, password")
+
+    console.log(`${config.mqttCamera.username}, ${config.mqttCamera.password}`)
 
     this.client = mqtt.connect(config.mqttCamera.broker, {
       username: config.mqttCamera.username,
       password: config.mqttCamera.password,
     });
 
-    console.log("Client Object Created, Trying to connect")
 
     this.client.on("connect", () => {
       console.log("Camera Client Connected")
