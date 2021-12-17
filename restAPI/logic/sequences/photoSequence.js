@@ -21,6 +21,7 @@ export default class PhotoSequence {
     await this.fetchPlantsLocations();
 
     if (!(await this.readStatus()).pins[10].value) {
+      console.log("Turn on the Pi peripheral")
       await this.farmbot.togglePin({ pin_number: 10 });
       setTimeout(async () => {
         return this.performAction();
@@ -93,6 +94,7 @@ export default class PhotoSequence {
             z: 0,
             speed: 100,
           });
+          console.log(`Farmed bot moved to: (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
         } catch (err) {
           console.log(err);
         }
@@ -127,7 +129,7 @@ export default class PhotoSequence {
       try {
         await this.farmbot.moveAbsolute({ x: 0, y: 100, z: 0, speed: 100 });
       } catch (err) {
-        console.log(err);
+        console.log("Moved to home location with usual error");
       }
 
       resolve();
