@@ -37,7 +37,8 @@ export default class FarmbotManager {
       })
       
       this.farmbot.on("status", (data, eventName) => {
-        console.log(`[Farmbot Status] [${eventName}] ${data}`)
+        console.log(`[Farmbot Status] [${eventName}]`)
+        console.log(data)
       })
       this.connectToCameraMqtt();
     }
