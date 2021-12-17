@@ -98,14 +98,14 @@ export default class PhotoSequence {
         }
 
         let responseMeasurement = {};
-        try {
-          responseMeasurement = JSON.parse(
-            (await this.cameraClient.receiveMeasurements()).toString()
-          );
-          console.log(responseMeasurement);
-        } catch (err) {
-          console.log(err);
-        }
+        // try {
+        //   responseMeasurement = JSON.parse(
+        //     (await this.cameraClient.receiveMeasurements()).toString()
+        //   );
+        //   console.log(responseMeasurement);
+        // } catch (err) {
+        //   console.log(err);
+        // }
 
         let responseCamera = {};
         try {
