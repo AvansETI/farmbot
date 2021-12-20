@@ -36,7 +36,9 @@ export default class FarmbotManager {
       });
 
       await this.farmbot.connect();
-      this.farmbot.on("online", function(data, eventName) {
+
+      this.farmbot.on("online", (data, eventName) => {
+        console.log("test")
         log(this.logSource, "Connection", "Connected to Farmbot")
       })
 
