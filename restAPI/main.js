@@ -10,6 +10,7 @@ import plantEndpoint from "./endpoints/plantEndpoint.js";
 
 import FarmbotManager from "./logic/farmbotManager.js";
 import config from "./config.js";
+import log from "./utils/logger.js"
 
 const app = express();
 
@@ -21,7 +22,7 @@ mongoose.connect(config.database.address, {
     useUnifiedTopology: true,
 });
 
-console.log("Created connection with mongoose to mongoDB")
+log("Startup", "Established connection with MongoDB")
 
 const farmbotManager = new FarmbotManager(
     config.user.email,
@@ -75,7 +76,7 @@ app.get("/waterSequence", (req, res) => {
 });
 
 app.listen(config.http.port, function() {
-    console.log(`Server started at port: ${config.http.port} `);
+    log("Startup", `Server started at port: ${config.http.port} `)
 });
 
 // farmbotManager.performDataSequence();
