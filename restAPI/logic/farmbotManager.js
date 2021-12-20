@@ -20,12 +20,15 @@ export default class FarmbotManager {
 
   isExecuting = false;
 
+  logSource = "FarmbotManager"
+
   constructor(email, password) {
     this.farmbotInformation.email = email;
     this.farmbotInformation.password = password;
   }
 
   async connect() {
+    log(this.logSource, "Connection", "Trying to connect to Farmbot")
     if (await this.getAuthToken()) {
       this.farmbot = new Farmbot({
         token: this.farmbotInformation.authToken,
@@ -34,15 +37,15 @@ export default class FarmbotManager {
 
       await this.farmbot.connect();
       this.farmbot.on("online", (data, eventName) => {
-        log("Farmbot Online", "Connected to Farmbot")
+        log(this.logSource, "Connection", "Connected to Farmbot")
       })
 
       this.farmbot.on("offline", (data, eventName) => {
-        log("Farmbot Offline", "Connction to Farmbot lost")
+        log(this.logSource, "Connection", "Connection to Farmbot lost")
       })
       
       this.farmbot.on("status_v8", (data, eventName) => {
-        log("Farmbot Status", data)
+        log(this.logSource, "Farmbot Status", data)
       })
       this.connectToCameraMqtt();
     }
@@ -66,8 +69,7 @@ export default class FarmbotManager {
 
       return true;
     } catch (err) {
-      console.log("Error email or password invalid");
-      console.log(err)
+      log(this.logSource, "AuthToken", "Error email or password invalid")
       return false;
     }
   }
@@ -84,7 +86,7 @@ export default class FarmbotManager {
     return new Promise(async (resolve, reject) => {
       console.log(this.isExecuting)
       if (!this.isExecuting) {
-        console.log("Starting Data Sequence");
+        log(this.logSource, "Data Sequence", "Starting Sequence")
         this.isExecuting = true;
 
         const sequence = new PhotoSequence(
@@ -97,7 +99,7 @@ export default class FarmbotManager {
           await sequence.performSequence();
         }
         catch(err) {
-          console.log(err)
+          log(this.logSource, "Data Sequence", err)
         }
        
         this.isExecuting = false;
@@ -112,7 +114,7 @@ export default class FarmbotManager {
   performWaterSequence() {
     return new Promise(async (resolve, reject) => {
       if (!this.isExecuting) {
-        console.log("Starting Water Sequence");
+        log(this.logSource, "Water Sequence", "Starting Sequence")
         this.isExecuting = true;
 
         const sequence = new WaterSequence(
@@ -123,7 +125,7 @@ export default class FarmbotManager {
         try {
           await sequence.performWateringSequence();
         } catch (err) {
-          console.log(err);
+          log(this.logSource, "Water Sequence", err)
         }
 
         this.isExecuting = false;

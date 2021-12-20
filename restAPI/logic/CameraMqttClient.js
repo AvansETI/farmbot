@@ -1,6 +1,7 @@
 import mqtt from "mqtt";
 
 import config from "./../config.js";
+import log from "./../utils/logger.js"
 
 /*  CameraClient
 
@@ -12,9 +13,7 @@ export default class CameraClient {
   constructor(farmbotId) {
     this.farmbotId = farmbotId;
 
-    console.log("Creating client object with username, password")
-
-    console.log(`${config.mqttCamera.username}, ${config.mqttCamera.password}`)
+    log("CameraClient", "Connection", "Trying to connect to MQTT")
 
     this.client = mqtt.connect(config.mqttCamera.broker, {
       username: config.mqttCamera.username,
@@ -23,12 +22,12 @@ export default class CameraClient {
 
 
     this.client.on("connect", () => {
-      console.log("Camera Client Connected")
+      log("CameraClient", "Connection", "Connection established")
       this.onConnect();
     });
 
     this.client.on("error", (error) => {
-      console.log("Camera Client MQTT Connection Error")
+      log("CameraClient", "Connection", "Connection Error")
       console.log(error)
     })
   }
@@ -39,7 +38,7 @@ export default class CameraClient {
   onConnect() {
     this.client.subscribe([`sensor/${this.farmbotId}/logs`, `sensor/${this.farmbotId}/measurement`], (err) => {
       if (err) {
-        console.log("error subscribing");
+        log("CameraClient", "Subscription", "Error Subscribing")
       }
 
       this.client.on("message", (topic, message) => {

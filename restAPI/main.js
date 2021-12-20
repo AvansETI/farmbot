@@ -13,6 +13,7 @@ import config from "./config.js";
 import log from "./utils/logger.js"
 
 const app = express();
+const logSource = "Main"
 
 mongoose.connect(config.database.address, {
     user: config.database.username,
@@ -22,7 +23,7 @@ mongoose.connect(config.database.address, {
     useUnifiedTopology: true,
 });
 
-log("Startup", "Established connection with MongoDB")
+log(logSource, "Startup", "Established connection with MongoDB")
 
 const farmbotManager = new FarmbotManager(
     config.user.email,
@@ -54,15 +55,15 @@ app.use(express.static("public"));
 await farmbotManager.connect();
 
 cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "0 0 10-23/4 * * *", async() => {
-    console.log("Starting cronjob data sequence");
+    log(logSource, "CronJob", "Starting Data Sequence")
     await farmbotManager.performDataSequence();
-    console.log("Stopping cronjob data sequence");
+    log(logSource, "CronJob", "Stopping Data Sequence")
 });
 
 cron.schedule(process.env.WATERSEQUENCE_SCHEDULE || "0 0 8 * * *", async() => {
-    console.log("Starting cronjob water sequence")
+    log(logSource, "CronJob", "Starting Water Sequence")
     await farmbotManager.performWaterSequence();
-    console.log("Stopping cronjob water sequence")
+    log(logSource, "CronJob", "Stopping Water Sequence")
 });
 
 app.get("/dataSequence", (req, res) => {
@@ -76,7 +77,7 @@ app.get("/waterSequence", (req, res) => {
 });
 
 app.listen(config.http.port, function() {
-    log("Startup", `Server started at port: ${config.http.port} `)
+    log("Main", "Startup", `Server started at port: ${config.http.port} `)
 });
 
 // farmbotManager.performDataSequence();
