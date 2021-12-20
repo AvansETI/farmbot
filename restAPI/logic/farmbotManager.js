@@ -37,21 +37,20 @@ export default class FarmbotManager {
 
       await this.farmbot.connect();
 
-      // this.farmbot.on("online", (data, eventName) => {
-      //   console.log("test")
-      //   log(this.logSource, "Connection", "Connected to Farmbot")
-      // })
+      this.farmbot.on("online", (data, eventName) => {
+        log(this.logSource, "Connection", "Connected to Farmbot")
+      })
 
-      // this.farmbot.on("offline", function(data, eventName) {
-      //   log(this.logSource, "Connection", "Connection to Farmbot lost")
-      // })
+      this.farmbot.on("offline", function(data, eventName) {
+        log(this.logSource, "Connection", "Connection to Farmbot lost")
+      })
       
       // this.farmbot.on("status", function(data, eventName) {
       //   log(this.logSource, "Farmbot Status", data)
       // })
 
       this.farmbot.on("logs", (data, eventName) => {
-        log(this.logSource + "Logs", eventName, JSON.stringify(data))
+        log(this.logSource + "Logs", eventName, JSON.stringify(data).message)
       })
       this.connectToCameraMqtt();
     }
