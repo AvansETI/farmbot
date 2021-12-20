@@ -6,7 +6,7 @@ import { Farmbot } from "farmbot";
 
 import PhotoSequence from "./sequences/photoSequence.js";
 import CameraClient from "./CameraMqttClient.js";
-import log from "../utils/logger"
+import log from "./../utils/logger"
 
 /* FarmbotManager
 
