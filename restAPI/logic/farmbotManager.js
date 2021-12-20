@@ -6,7 +6,7 @@ import { Farmbot } from "farmbot";
 
 import PhotoSequence from "./sequences/photoSequence.js";
 import CameraClient from "./CameraMqttClient.js";
-import log from "./../utils/logger.js"
+import Logger from "./../utils/logger.js"
 
 /* FarmbotManager
 
@@ -34,15 +34,15 @@ export default class FarmbotManager {
 
       await this.farmbot.connect();
       this.farmbot.on("online", (data, eventName) => {
-        log("Farmbot Online", "Connected to Farmbot")
+        Logger.log("Farmbot Online", "Connected to Farmbot")
       })
 
       this.farmbot.on("offline", (data, eventName) => {
-        log("Farmbot Offline", "Connction to Farmbot lost")
+        Logger.log("Farmbot Offline", "Connction to Farmbot lost")
       })
       
       this.farmbot.on("status_v8", (data, eventName) => {
-        log("Farmbot Status", data)
+        Logger.log("Farmbot Status", data)
       })
       this.connectToCameraMqtt();
     }
