@@ -51,7 +51,7 @@ export default class FarmbotManager {
       // })
 
       this.farmbot.on("*", (data, eventName) => {
-        log(this.logSource + "Debug", eventName, data)
+        log(this.logSource + "Debug", eventName, JSON.stringify(data))
       })
       this.connectToCameraMqtt();
     }
