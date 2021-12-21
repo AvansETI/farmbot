@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { savePlant } from "./../../database/database.js";
+import log from "./../../utils/logger.js"
 
 /* PhotoSequence
 
