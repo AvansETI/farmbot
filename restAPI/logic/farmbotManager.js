@@ -64,7 +64,7 @@ export default class FarmbotManager {
       with a plant
   */
   pointCallback(point) {
-    log(this.logSource, "Point Callback", point)
+    log("FarmbotManager Callback", "Point Callback", point)
     this.lastPoint = point
   }
 

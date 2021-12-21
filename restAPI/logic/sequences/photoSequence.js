@@ -89,16 +89,31 @@ export default class PhotoSequence {
     return new Promise(async (resolve, reject) => {
       for (const pointIndex in this.points) {
         try {
-          console.log(`Farmbot moving to: (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
-          await this.farmbot.moveAbsolute({
-            x: this.points[pointIndex].x,
-            y: this.points[pointIndex].y,
-            z: 0,
-            speed: 100,
-          });
-          console.log(`Farmbot finished moving to: (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
+          const movePromise = new Promise(async (resolve, reject) => {
+            log("PhotoSequence", "Move Request", `Requesting to move to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
+            await this.farmbot.moveAbsolute({
+              x: this.points[pointIndex].x,
+              y: this.points[pointIndex].y,
+              z: 0,
+              speed: 100,
+            }).catch(err => {
+              log("PhotoSequence", "Moving Action Error Catch", "moveAbsolute Rejected...")
+            })
+            resolve()
+          })
+          
+
+          const timeoutPromise = new Promise((resolve, reject) => {
+            // Check if two minutes go by, if so
+            setTimeout(() => {
+              log("PhotoSequence", "Moving Timeout", "Moving took more then 2 minutes, something probably went wrong...")
+              reject()
+            }, 120000)
+          })
+
+          Promise.race([movePromise, timeoutPromise])
         } catch (err) {
-          console.log(err);
+          log("PhotoSequence", "Move Action Error", err)
         }
 
         let responseMeasurement = {};
@@ -116,7 +131,8 @@ export default class PhotoSequence {
           responseCamera = JSON.parse(
             (await this.cameraClient.takePicture()).toString()
           );
-          console.log(responseCamera);
+          log("PhotoSequence", "Camera Response Status", responseCamera.status)
+          // console.log(responseCamera);
 
           savePlant(
             this.points[pointIndex],
