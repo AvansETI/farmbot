@@ -90,36 +90,43 @@ export default class PhotoSequence {
     return new Promise(async (resolve, reject) => {
       for (const pointIndex in this.points) {
         try {
-          const movePromise = new Promise((resolve, reject) => {
-            log("PhotoSequence", "Move Request", `Requesting to move to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
-            this.farmbot.moveAbsolute({
-              x: this.points[pointIndex].x,
-              y: this.points[pointIndex].y,
-              z: 0,
-              speed: 100,
-            }).catch(err => {
-              log("PhotoSequence", "Moving Action Error Catch", "moveAbsolute Rejected...")
-            })
-            resolve()
+          log("PhotoSequence", "Move Request", `Requesting to move to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
+          await this.farmbot.moveAbsolute({
+            x: this.points[pointIndex].x,
+            y: this.points[pointIndex].y,
+            z: 0,
+            speed: 100,
           })
+          .then(value => {
+            log("PhotoSequence", "Moving Action", `Done moving to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
+          })
+          .catch(err => {
+            log("PhotoSequence", "Moving Action Error Catch", "moveAbsolute Rejected...")
+          })
+
+          // const movePromise = new Promise((resolve, reject) => {
+            
+            
+          //   resolve()
+          // })
           
 
-          const timeoutPromise = new Promise((resolve, reject) => {
-            // Check if two minutes go by, if so
-            setTimeout(() => {
-              log("PhotoSequence", "Moving Timeout", "Moving took more then 2 minutes, something probably went wrong...")
-              reject()
-            }, 120000)
-          })
+          // const timeoutPromise = new Promise((resolve, reject) => {
+          //   // Check if two minutes go by, if so
+          //   setTimeout(() => {
+          //     log("PhotoSequence", "Moving Timeout", "Moving took more then 2 minutes, something probably went wrong...")
+          //     reject()
+          //   }, 120000)
+          // })
 
-          Promise.race([movePromise, timeoutPromise]).catch(err => {
-            log("PhotoSequence", "Move Error Catch", err)
-          })
+          // Promise.race([movePromise, timeoutPromise]).catch(err => {
+          //   log("PhotoSequence", "Move Error Catch", err)
+          // })
         } catch (err) {
           log("PhotoSequence", "Move Error", err)
         }
 
-        let responseMeasurement = {};
+        // let responseMeasurement = {};
         // try {
         //   responseMeasurement = JSON.parse(
         //     (await this.cameraClient.receiveMeasurements()).toString()
