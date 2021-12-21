@@ -90,9 +90,9 @@ export default class PhotoSequence {
     return new Promise(async (resolve, reject) => {
       for (const pointIndex in this.points) {
         try {
-          const movePromise = new Promise(async (resolve, reject) => {
+          const movePromise = new Promise((resolve, reject) => {
             log("PhotoSequence", "Move Request", `Requesting to move to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
-            await this.farmbot.moveAbsolute({
+            this.farmbot.moveAbsolute({
               x: this.points[pointIndex].x,
               y: this.points[pointIndex].y,
               z: 0,
@@ -112,9 +112,11 @@ export default class PhotoSequence {
             }, 120000)
           })
 
-          Promise.race([movePromise, timeoutPromise])
+          Promise.race([movePromise, timeoutPromise]).catch(err => {
+            log("PhotoSequence", "Move Error Catch", err)
+          })
         } catch (err) {
-          log("PhotoSequence", "Move Action Error", err)
+          log("PhotoSequence", "Move Error", err)
         }
 
         let responseMeasurement = {};
