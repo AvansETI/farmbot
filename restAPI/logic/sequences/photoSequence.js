@@ -126,7 +126,7 @@ export default class PhotoSequence {
           log("PhotoSequence", "Move Error", err)
         }
 
-        // let responseMeasurement = {};
+        let responseMeasurement = {};
         // try {
         //   responseMeasurement = JSON.parse(
         //     (await this.cameraClient.receiveMeasurements()).toString()
