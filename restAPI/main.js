@@ -17,17 +17,19 @@ const logSource = "Main"
 
 log(logSource, "Startup", `Trying to connect to mongoDB with ${config.database.username}, ${config.database.password}`)
 
-mongoose.connect(config.database.address, {
+await mongoose.connect(config.database.address, {
     user: config.database.username,
     pass: config.database.password,
     authSource: "admin",
     useNewUrlParser: true,
     useUnifiedTopology: true,
-}).then(
+}).then(() => {
     log(logSource, "Startup", "Established connection with MongoDB")
-).catch(
+}
+).catch((err) => {
     log(logSource, "Startup Failed", "Connection with MongoDB Failed")
-)
+    log(logSource, "Startup Failed", err)
+})
 
 
 
