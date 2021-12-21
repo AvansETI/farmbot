@@ -20,6 +20,9 @@ export default class FarmbotManager {
 
   isExecuting = false;
 
+  runningSequence = undefined;
+  lastPoint = undefined;
+
   logSource = "FarmbotManager"
 
   constructor(email, password) {
@@ -56,6 +59,15 @@ export default class FarmbotManager {
     }
   }
 
+  /*  pointCallback
+      Function to pass to a sequence which uses a callback to call this function when it is done 
+      with a plant
+  */
+  pointCallback(point) {
+    log(this.logSource, "Point Callback", point)
+    this.lastPoint = point
+  }
+
   /*  getAuthToken
       Returns the Farmbot_id and Farmbot token by posting a request on my.farm.bot/api/tokens 
       The Farmbot token is used for communicating with the Farmbot
@@ -87,17 +99,19 @@ export default class FarmbotManager {
       Starts the sequence of collecting the data out of the field
   */
   performDataSequence() {
-    console.log(this.isExecuting)
+    log(this.logSource, "Data Sequence", "Requested")
     return new Promise(async (resolve, reject) => {
-      console.log(this.isExecuting)
+      log(this.logSource, "Data Sequence", `Currently executing something: ${this.isExecuting}`)
       if (!this.isExecuting) {
         log(this.logSource, "Data Sequence", "Starting Sequence")
         this.isExecuting = true;
+        this.runningSequence = "data"
 
         const sequence = new PhotoSequence(
           this.farmbot,
           this.cameraMqttClient,
-          this.farmbotInformation
+          this.farmbotInformation,
+          this.pointCallback
         );
         
         try {
@@ -108,6 +122,7 @@ export default class FarmbotManager {
         }
        
         this.isExecuting = false;
+        this.runningSequence = null;
       }
       resolve();
     });
@@ -117,10 +132,13 @@ export default class FarmbotManager {
       Starts the sequence of watering all the plants within the field
   */
   performWaterSequence() {
+    log(this.logSource, "Water Sequence", "Requested")
     return new Promise(async (resolve, reject) => {
+      log(this.logSource, "Water Sequence", `Currently executing something: ${this.isExecuting}`)
       if (!this.isExecuting) {
         log(this.logSource, "Water Sequence", "Starting Sequence")
         this.isExecuting = true;
+        this.runningSequence = "water"
 
         const sequence = new WaterSequence(
           this.farmbot,

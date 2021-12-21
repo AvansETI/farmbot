@@ -6,10 +6,11 @@ import { savePlant } from "./../../database/database.js";
 
 */
 export default class PhotoSequence {
-  constructor(farmbot, cameraClient, farmbotInformation) {
+  constructor(farmbot, cameraClient, farmbotInformation, pointCallback) {
     this.farmbot = farmbot;
     this.cameraClient = cameraClient;
     this.farmbotInformation = farmbotInformation;
+    this.pointCallback = pointCallback
   }
 
   /*  performSequence()
@@ -125,6 +126,8 @@ export default class PhotoSequence {
         } catch (err) {
           console.log(err);
         }
+
+        this.pointCallback(pointIndex)
       }
 
       try {
