@@ -15,20 +15,20 @@ import log from "./utils/logger.js"
 const app = express();
 const logSource = "Main"
 
-log(logSource, "Startup", `Trying to connect to mongoDB at adress: ${config.database.address}, with ${config.database.username}, ${config.database.password}`)
+// log(logSource, "Startup", `Trying to connect to mongoDB at adress: ${config.database.address}, with ${config.database.username}, ${config.database.password}`)
 
-await mongoose.connect(config.database.address, {
-    user: config.database.username,
-    pass: config.database.password,
-    authSource: "admin",
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
-    log(logSource, "Startup", "Established connection with MongoDB")
-}).catch((err) => {
-    log(logSource, "Startup Failed", "Connection with MongoDB Failed")
-    log(logSource, "Startup Failed", err)
-})
+// await mongoose.connect(config.database.address, {
+//     user: config.database.username,
+//     pass: config.database.password,
+//     authSource: "admin",
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+// }).then(() => {
+//     log(logSource, "Startup", "Established connection with MongoDB")
+// }).catch((err) => {
+//     log(logSource, "Startup Failed", "Connection with MongoDB Failed")
+//     log(logSource, "Startup Failed", err)
+// })
 
 
 
