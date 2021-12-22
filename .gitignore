@@ -273,3 +273,4 @@ Farmbot Cloud/restAPI/docker-compose.yml
 Farmbot Cloud/restAPI/Dockerfile
 Farmbot Cloud/restAPI/pubsub-service-account.json
 Farmbot Cloud/camera/pubsub-service-account.json
+Farmbot Cloud/ML/pubsub-service-account.json
