@@ -13,8 +13,7 @@ export default class PhotoSequence {
     this.cameraClient = cameraClient;
     this.farmbotInformation = farmbotInformation;
     this.pointCallback = pointCallback
-    this.documentStorage = new DocumentStorage("./../../credentials/farmbot-avans-cloud-b127ccec038b.json")
-    // this.documentStorage = new DocumentStorage("./credentials/farmbot-avans-cloud-b127ccec038b.json")
+    this.documentStorage = new DocumentStorage("./credentials/farmbot-avans-cloud-b127ccec038b.json")
   }
 
   /*  performSequence()
