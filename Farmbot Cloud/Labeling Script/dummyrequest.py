@@ -1,8 +1,8 @@
 import requests
 import cv2
 
-URL = "http://localhost:3000/image?messageId=1234"
-imgUrl = 'Farmbot Cloud/testimages/biet.jpg'
+URL = "https://labeling-container-6vu6nynuxa-ez.a.run.app/image?messageId=08c22ba3-3835-439f-80a7-7c942db106f3"
+imgUrl = 'testimages/biet.jpg'
 
 image = cv2.imread(imgUrl)
 
@@ -16,6 +16,8 @@ try:
         data=binary_image,
         headers=headers
     )
-    print(str(response))
+    print(response)
+    print(response.content)
 except Exception as e:
+                print("error")
                 print(str(e))

@@ -5,7 +5,7 @@ const config = {
     // Server port
     port: 1444,
 
-    bucketName: "farmbot-avans-cloud",
+    bucketName: "farmbot-avans-cloud.appspot.com",
 
     collectionName: "Farmbot"
 }

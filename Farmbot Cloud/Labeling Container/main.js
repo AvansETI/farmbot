@@ -38,14 +38,11 @@ app.get("/", (req, res) => {
 app.post("/image", (req, res) => {
   const photoId = req.query.messageId;
 
-  // fs.mkdir('./images', {}, (err) => {
-  //   console.log("Error creating directory")
-  //   console.log(err)
-  //   res.status(500).send(err)
-  // })
-  // fs.mkdir('./images')
+  const localdir = `/tmp/images/`
+  const photoPath = `${photoId}.jpg`
 
-  fs.writeFile(`images/${photoId}.jpg`, req.body, (err) => {
+  console.log("Writing file to filesystem")
+  fs.writeFile(localdir + photoPath, req.body, (err) => {
     if (err) {
       console.log("Error writing file")
       console.log(err);
@@ -54,6 +51,7 @@ app.post("/image", (req, res) => {
   });
 
   // File lookup in the document database
+  console.log("Looking up image in firestore")
   documents.searchImage(photoId).
   then((doc_data) => {
 
@@ -61,15 +59,16 @@ app.post("/image", (req, res) => {
     let plant_type = doc_data.plant_type
 
     // Insert image into the crop directory
-    let file = `${photoId}.jpg`
+    console.log("Uploading image")
     let targetdir = `${config.datasetTitle}/${plant_type}/`
-    media.uploadImage(file, targetdir)
+    media.uploadImage(localdir + photoPath, targetdir, photoPath)
 
-    // fs.rmdir('./images')
     // add status report on foto send for debugging and logging purposes
-    res.status(200).send(`Succesfully saved ${file} in ${targetdir}`);
+    res.status(200).send(`Succesfully saved ${photoPath} in ${targetdir}`);
   })
   .catch((reason) => {
+    console.log("Something went wrong")
+    console.log(reason)
     res.status(500).send(reason)
   })
 });

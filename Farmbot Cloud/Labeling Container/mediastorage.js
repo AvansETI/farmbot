@@ -7,9 +7,14 @@ class MediaStorage {
         this.storage = new Storage()
     }
 
-    async uploadImage(file, subdirectory) {
-        await this.storage.bucket(config.bucketName).upload('images/ + file', {
-            destination: subdirectory + file
+    async uploadImage(file, subdirectory, targetFilePath) {
+        await this.storage.bucket(config.bucketName)
+        .upload(file, {
+            destination: subdirectory + targetFilePath
+        })
+        .catch((reason) => {
+            console.log("Error writing file to storage bucket")
+            console.log(reason)
         })
     }
 }

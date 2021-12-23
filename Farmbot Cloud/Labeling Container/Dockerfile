@@ -1,8 +1,6 @@
 FROM node:16
 
-WORKDIR /usr/src/app
-
-RUN mkdir /images
+RUN mkdir /tmp/images/
 
 COPY package*.json ./
 
