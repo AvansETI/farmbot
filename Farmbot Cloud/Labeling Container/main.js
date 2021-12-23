@@ -31,6 +31,10 @@ app.use(express.static("public"));
 // Start express on the defined port
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
 
+app.get("/", (req, res) => {
+  res.status(200).send("Farmbot labeling container")
+})
+
 app.post("/image", (req, res) => {
   const photoId = req.query.messageId;
 
