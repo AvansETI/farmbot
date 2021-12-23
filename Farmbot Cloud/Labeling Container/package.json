@@ -1,0 +1,15 @@
+{
+  "name": "Farmbot Labeling Container",
+  "description": "A container that labels images taken by a farmbot according to a firestore document",
+  "version": "1.0.0",
+  "author": "Ties Tienhoven <tiestienhoven@gmail.com>",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^5.0.1",
+    "@google-cloud/storage": "^5.16.1",
+    "express": "^4.17.1"
+  }
+}
