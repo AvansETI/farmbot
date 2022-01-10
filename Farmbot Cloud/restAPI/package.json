@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "farmbot": "^13.1.0",
     "mongoose": "^5.12.13",
-    "node-cron": "^3.0.0"
+    "node-cron": "^3.0.0",
+    "uuid": "^8.3.2"
   }
 }

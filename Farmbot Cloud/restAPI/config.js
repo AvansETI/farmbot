@@ -1,8 +1,7 @@
 export default {
     googleSecrets: {
-        email: "FarmbotApiEmail",
-        password: "FarmbotApiPassword",
-        version: 1
+        email: "projects/790946602422/secrets/FarmbotApiEmail/versions/latest",
+        password: "projects/790946602422/secrets/FarmbotApiPassword/versions/latest"
     },
     http: {
         port: 3000,

@@ -10,8 +10,7 @@ import log from "./../utils/logger.js"
 
 import config from "../config.js";
 
-import { SecretManagerServiceClient } from "@google-cloud/secret-manager/build/src/v1";
-import { version } from "mongoose";
+import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
 
 /* FarmbotManager
 
@@ -31,28 +30,13 @@ export default class FarmbotManager {
   logSource = "FarmbotManager"
 
   constructor() {
-    const client = new SecretManagerServiceClient();
-    
-    email = config.googleSecrets.email
-    password = config.googleSecrets.password
-    version = config.googleSecrets.version
-
-    // Access the secret.
-    const [accessResponse] = await client.accessSecretVersion({
-      email: version,
-      password: version
-    });
-
-    const responsePayload = accessResponse.payload.data
-    log(logSource, "Secret Payload", `Payload: ${responsePayload}`)
-
-    // TODO get email and password from google secrets
-    this.farmbotInformation.email = responsePayload.email;
-    this.farmbotInformation.password = responsePayload.password;
+    this.secretClient = new SecretManagerServiceClient();
+    this.secretClient.initialize()
   }
 
   async connect() {
     log(this.logSource, "Connection", "Trying to connect to Farmbot")
+    await this.getCredentialsFromSecrets()
     if (await this.getAuthToken()) {
       this.farmbot = new Farmbot({
         token: this.farmbotInformation.authToken,
@@ -80,6 +64,31 @@ export default class FarmbotManager {
     }
   }
 
+  disconnect() {
+    this.farmbot = null
+    this.cameraMqttClient.disconnect()
+  }
+
+  async getCredentialsFromSecrets(){
+    log(this.logSource, "Credentials", "Trying to get the secrets")
+
+    let [emailResponse] = await this.secretClient.accessSecretVersion({
+      name: config.googleSecrets.email
+    })
+
+    this.farmbotInformation.email = emailResponse.payload.data.toString('utf8')
+
+    let [passwordResponse] = await this.secretClient.accessSecretVersion({
+      name: config.googleSecrets.password
+    })
+
+    this.farmbotInformation.password = passwordResponse.payload.data.toString('utf8')
+    
+    // log(this.logSource, "Credentails email", this.farmbotInformation.email)
+    // log(this.logSource, "Credentails password", this.farmbotInformation.password)
+    log(this.logSource, "Credentails", "Secrets gathered")
+  }
+
   /*  pointCallback
       Function to pass to a sequence which uses a callback to call this function when it is done 
       with a plant
@@ -95,19 +104,21 @@ export default class FarmbotManager {
   */
   async getAuthToken() {
     try {
-      const reponse = await axios.post("https://my.farm.bot/api" + "/tokens", {
+      let body = {
         user: {
           email: this.farmbotInformation.email,
           password: this.farmbotInformation.password,
         },
-      });
+      }
+      log(this.logSource, "AuthToken", JSON.stringify(body))
+      const reponse = await axios.post("https://my.farm.bot/api" + "/tokens", body);
 
       this.farmbotInformation.id = reponse.data.token.unencoded.bot;
       this.farmbotInformation.authToken = reponse.data.token.encoded;
 
       return true;
     } catch (err) {
-      log(this.logSource, "AuthToken", "Error email or password invalid")
+      log(this.logSource, "AuthToken", err)
       return false;
     }
   }

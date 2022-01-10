@@ -12,12 +12,8 @@ import FarmbotManager from "./logic/farmbotManager.js";
 import config from "./config.js";
 import log from "./utils/logger.js"
 
-
-
 const app = express();
 const logSource = "Main"
-
-const farmbotManager = new FarmbotManager()
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -41,8 +37,6 @@ app.use("/image", imageEndpoint);
 app.use("/plant", plantEndpoint);
 app.use(express.static("public"));
 
-await farmbotManager.connect();
-
 // cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "0 0 10-23/4 * * *", async() => {
 //     log(logSource, "CronJob", "Starting Data Sequence")
 //     await farmbotManager.performDataSequence();
@@ -54,16 +48,21 @@ await farmbotManager.connect();
 //     await farmbotManager.performWaterSequence();
 //     log(logSource, "CronJob", "Stopping Water Sequence")
 // });
+const farmbotManager = new FarmbotManager()
 
-app.get("/dataSequence", (req, res) => {
+app.get("/dataSequence", async (req, res) => {
+    await farmbotManager.connect();
     farmbotManager.performDataSequence();
     res.end("Data sequence has started!");
+    farmbotManager.disconnect()
 });
 
-// app.get("/waterSequence", (req, res) => {
-//     farmbotManager.performWaterSequence();
-//     res.end("Water sequence has started!");
-// });
+app.get("/waterSequence", (req, res) => {
+    farmbotManager.connect()
+    farmbotManager.performWaterSequence();
+    res.end("Water sequence has started!");
+    farmbotManager.disconnect()
+});
 
 app.listen(config.http.port, function() {
     log("Main", "Startup", `Server started at port: ${config.http.port} `)
