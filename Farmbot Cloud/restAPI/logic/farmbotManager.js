@@ -8,6 +8,11 @@ import PhotoSequence from "./sequences/photoSequence.js";
 import CameraClient from "./CameraMqttClient.js";
 import log from "./../utils/logger.js"
 
+import config from "../config.js";
+
+import { SecretManagerServiceClient } from "@google-cloud/secret-manager/build/src/v1";
+import { version } from "mongoose";
+
 /* FarmbotManager
 
 
@@ -25,9 +30,25 @@ export default class FarmbotManager {
 
   logSource = "FarmbotManager"
 
-  constructor(email, password) {
-    this.farmbotInformation.email = email;
-    this.farmbotInformation.password = password;
+  constructor() {
+    const client = new SecretManagerServiceClient();
+    
+    email = config.googleSecrets.email
+    password = config.googleSecrets.password
+    version = config.googleSecrets.version
+
+    // Access the secret.
+    const [accessResponse] = await client.accessSecretVersion({
+      email: version,
+      password: version
+    });
+
+    const responsePayload = accessResponse.payload.data
+    log(logSource, "Secret Payload", `Payload: ${responsePayload}`)
+
+    // TODO get email and password from google secrets
+    this.farmbotInformation.email = responsePayload.email;
+    this.farmbotInformation.password = responsePayload.password;
   }
 
   async connect() {
@@ -44,10 +65,10 @@ export default class FarmbotManager {
         log(this.logSource, "Connection", "Connected to Farmbot")
       })
 
-      this.farmbot.on("offline", function(data, eventName) {
+      this.farmbot.on("offline", function (data, eventName) {
         log(this.logSource, "Connection", "Connection to Farmbot lost")
       })
-      
+
       // this.farmbot.on("status", function(data, eventName) {
       //   log(this.logSource, "Farmbot Status", data)
       // })
@@ -113,14 +134,14 @@ export default class FarmbotManager {
           this.farmbotInformation,
           this.pointCallback
         );
-        
+
         try {
           await sequence.performSequence();
         }
-        catch(err) {
+        catch (err) {
           log(this.logSource, "Data Sequence", err)
         }
-       
+
         this.isExecuting = false;
         this.runningSequence = null;
       }
@@ -180,14 +201,14 @@ class WaterSequence {
     const tools = await this.fetchTools();
     const locations = await this.fetchLocations();
 
-    if(tools == undefined){
+    if (tools == undefined) {
       console.log(Date.now())
       console.log("Fetching of tools returned undefined object")
       console.log("tools: " + tools)
       return
     }
 
-    if(locations == undefined){
+    if (locations == undefined) {
       console.log(Date.now())
       console.log("Fetching of locations return undefined object")
       console.log("locations: " + locations)
@@ -367,7 +388,7 @@ class WaterSequence {
         try {
           await this.giveWater(2000);
         }
-        catch(err) {
+        catch (err) {
           console.log(err)
         }
       }
@@ -378,7 +399,7 @@ class WaterSequence {
       // catch(err) {
       //   console.log(err)
       // }
-      
+
       resolve();
     });
   }

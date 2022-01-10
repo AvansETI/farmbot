@@ -20,6 +20,7 @@
   "dependencies": {
     "@google-cloud/firestore": "^5.0.2",
     "@google-cloud/pubsub": "^2.18.4",
+    "@google-cloud/secret-manager": "^3.10.1",
     "atob": "^2.1.2",
     "axios": "^0.21.1",
     "cors": "^2.8.5",

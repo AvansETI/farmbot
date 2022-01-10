@@ -17,10 +17,7 @@ import log from "./utils/logger.js"
 const app = express();
 const logSource = "Main"
 
-const farmbotManager = new FarmbotManager(
-    config.user.email,
-    config.user.password,
-);
+const farmbotManager = new FarmbotManager()
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
