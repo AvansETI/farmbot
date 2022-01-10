@@ -57,8 +57,8 @@ app.get("/dataSequence", async (req, res) => {
     farmbotManager.disconnect()
 });
 
-app.get("/waterSequence", (req, res) => {
-    farmbotManager.connect()
+app.get("/waterSequence", async (req, res) => {
+    await farmbotManager.connect()
     farmbotManager.performWaterSequence();
     res.end("Water sequence has started!");
     farmbotManager.disconnect()
