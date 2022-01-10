@@ -268,7 +268,6 @@ Thumbs.db
 
 # profiling data
 .prof
-Farmbot Cloud/restAPI/config.js
 Farmbot Cloud/restAPI/docker-compose.yml
 Farmbot Cloud/restAPI/Dockerfile
 Farmbot Cloud/restAPI/pubsub-service-account.json
