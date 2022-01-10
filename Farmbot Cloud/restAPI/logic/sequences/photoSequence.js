@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { savePlant } from "./../../database/database.js";
 import log from "./../../utils/logger.js"
+import DocumentStorage from "./../../database/documentstorage.js"
 
 /* PhotoSequence
 
@@ -12,6 +13,7 @@ export default class PhotoSequence {
     this.cameraClient = cameraClient;
     this.farmbotInformation = farmbotInformation;
     this.pointCallback = pointCallback
+    this.documentStorage = new DocumentStorage()
   }
 
   /*  performSequence()
@@ -144,11 +146,17 @@ export default class PhotoSequence {
           log("PhotoSequence", "Camera Response Status", responseCamera.status)
           // console.log(responseCamera);
 
-          savePlant(
+          // savePlant(
+          //   this.points[pointIndex],
+          //   responseCamera,
+          //   responseMeasurement
+          // );
+
+          this.documentStorage.writePlant(
             this.points[pointIndex],
             responseCamera,
             responseMeasurement
-          );
+          )
         } catch (err) {
           console.log(err);
         }

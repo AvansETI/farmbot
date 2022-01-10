@@ -17,16 +17,6 @@ import log from "./utils/logger.js"
 const app = express();
 const logSource = "Main"
 
-// mongoose.connect(config.database.address, {
-//     user: config.database.username,
-//     pass: config.database.password,
-//     authSource: "admin",
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// });
-
-// log(logSource, "Startup", "Established connection with MongoDB")
-
 const farmbotManager = new FarmbotManager(
     config.user.email,
     config.user.password,
