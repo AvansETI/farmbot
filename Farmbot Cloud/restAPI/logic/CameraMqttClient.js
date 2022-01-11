@@ -19,7 +19,9 @@ export default class CameraClient {
     this.subscribteToTopics();
   }
 
-
+  disconnect(){
+    this.client.close()
+  }
   /*  subscribteToTopics()
       subscribe to the MQTT broker for the camera and the measurements.
   */

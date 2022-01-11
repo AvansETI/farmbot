@@ -12,25 +12,8 @@ import FarmbotManager from "./logic/farmbotManager.js";
 import config from "./config.js";
 import log from "./utils/logger.js"
 
-
-
 const app = express();
 const logSource = "Main"
-
-// mongoose.connect(config.database.address, {
-//     user: config.database.username,
-//     pass: config.database.password,
-//     authSource: "admin",
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// });
-
-// log(logSource, "Startup", "Established connection with MongoDB")
-
-const farmbotManager = new FarmbotManager(
-    config.user.email,
-    config.user.password,
-);
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,8 +37,6 @@ app.use("/image", imageEndpoint);
 app.use("/plant", plantEndpoint);
 app.use(express.static("public"));
 
-await farmbotManager.connect();
-
 // cron.schedule(process.env.DATASEQUENCE_SCHEDULE || "0 0 10-23/4 * * *", async() => {
 //     log(logSource, "CronJob", "Starting Data Sequence")
 //     await farmbotManager.performDataSequence();
@@ -67,16 +48,21 @@ await farmbotManager.connect();
 //     await farmbotManager.performWaterSequence();
 //     log(logSource, "CronJob", "Stopping Water Sequence")
 // });
+const farmbotManager = new FarmbotManager()
 
-app.get("/dataSequence", (req, res) => {
-    farmbotManager.performDataSequence();
+app.get("/dataSequence", async (req, res) => {
+    await farmbotManager.connect();
+    await farmbotManager.performDataSequence();
     res.end("Data sequence has started!");
+    farmbotManager.disconnect()
 });
 
-// app.get("/waterSequence", (req, res) => {
-//     farmbotManager.performWaterSequence();
-//     res.end("Water sequence has started!");
-// });
+app.get("/waterSequence", async (req, res) => {
+    await farmbotManager.connect()
+    await farmbotManager.performWaterSequence();
+    res.end("Water sequence has started!");
+    farmbotManager.disconnect()
+});
 
 app.listen(config.http.port, function() {
     log("Main", "Startup", `Server started at port: ${config.http.port} `)

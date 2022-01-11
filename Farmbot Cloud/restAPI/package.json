@@ -1,5 +1,5 @@
 {
-  "name": "diff_farmbot_2021",
+  "name": "farmbot_cloud_avans_2022",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -11,20 +11,23 @@
     "type": "git",
     "url": "git+https://gitlab.com/L15V/diff_farmbot_2021.git"
   },
-  "author": "",
+  "author": "Ties Tienhoven & Chiem Stevens",
   "license": "ISC",
   "bugs": {
     "url": "https://gitlab.com/L15V/diff_farmbot_2021/issues"
   },
   "homepage": "https://gitlab.com/L15V/diff_farmbot_2021#readme",
   "dependencies": {
+    "@google-cloud/firestore": "^5.0.2",
     "@google-cloud/pubsub": "^2.18.4",
+    "@google-cloud/secret-manager": "^3.10.1",
     "atob": "^2.1.2",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "farmbot": "^13.1.0",
     "mongoose": "^5.12.13",
-    "node-cron": "^3.0.0"
+    "node-cron": "^3.0.0",
+    "uuid": "^8.3.2"
   }
 }
