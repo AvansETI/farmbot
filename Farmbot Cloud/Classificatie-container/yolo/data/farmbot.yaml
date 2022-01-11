@@ -1,0 +1,9 @@
+train: datasets/farmbot/images/train/ 
+val:  datasets/farmbot/images/val/
+test: datasets/farmbot/images/test/
+
+# number of classes
+nc: 4
+
+# class names
+names: ["beet","endive", "kohlrabi","weed"]
