@@ -52,14 +52,14 @@ const farmbotManager = new FarmbotManager()
 
 app.get("/dataSequence", async (req, res) => {
     await farmbotManager.connect();
-    farmbotManager.performDataSequence();
+    await farmbotManager.performDataSequence();
     res.end("Data sequence has started!");
     farmbotManager.disconnect()
 });
 
 app.get("/waterSequence", async (req, res) => {
     await farmbotManager.connect()
-    farmbotManager.performWaterSequence();
+    await farmbotManager.performWaterSequence();
     res.end("Water sequence has started!");
     farmbotManager.disconnect()
 });

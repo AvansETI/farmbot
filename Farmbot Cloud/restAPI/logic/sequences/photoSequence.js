@@ -21,17 +21,17 @@ export default class PhotoSequence {
       read out the pi if the camera is connected or not,
       then perform the data collection action.
   */
-  async performSequence() {
+  async performSequence(lastPoint) {
     await this.fetchPlantsLocations();
 
     if (!(await this.readStatus()).pins[10].value) {
       console.log("Turn on the Pi peripheral")
       await this.farmbot.togglePin({ pin_number: 10 });
       setTimeout(async () => {
-        return this.performAction();
+        return this.performAction(lastPoint);
       }, 120000);
     } else {
-      return this.performAction();
+      return this.performAction(lastPoint);
     }
   }
 
@@ -88,86 +88,64 @@ export default class PhotoSequence {
       Move the Farmbot over all the plants, taking a photo of it and saving all the data in the database.
       After being done, move the Farmbot to home.
   */
-  performAction() {
+  performAction(lastPoint) {
     return new Promise(async (resolve, reject) => {
       for (const pointIndex in this.points) {
-        try {
-          log("PhotoSequence", "Move Request", `Requesting to move to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
-          await this.farmbot.moveAbsolute({
-            x: this.points[pointIndex].x,
-            y: this.points[pointIndex].y,
-            z: 0,
-            speed: 100,
-          })
-          .then(value => {
-            log("PhotoSequence", "Moving Action", `Done moving to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
-          })
-          .catch(err => {
-            log("PhotoSequence", "Moving Action Error Catch", "moveAbsolute Rejected...")
-          })
+        if (pointIndex >= lastPoint || lastPoint == null) {
+          try {
+            log("PhotoSequence", "Move Request", `Requesting to move to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
+            await this.farmbot.moveAbsolute({
+              x: this.points[pointIndex].x,
+              y: this.points[pointIndex].y,
+              z: 0,
+              speed: 100,
+            })
+              .then(value => {
+                log("PhotoSequence", "Moving Action", `Done moving to (${this.points[pointIndex].x},${this.points[pointIndex].y})`)
+              })
+              .catch(err => {
+                log("PhotoSequence", "Moving Action Error Catch", "moveAbsolute Rejected...")
+              })
 
-          // const movePromise = new Promise((resolve, reject) => {
-            
-            
-          //   resolve()
-          // })
-          
+          } catch (err) {
+            log("PhotoSequence", "Move Error", err)
+          }
 
-          // const timeoutPromise = new Promise((resolve, reject) => {
-          //   // Check if two minutes go by, if so
-          //   setTimeout(() => {
-          //     log("PhotoSequence", "Moving Timeout", "Moving took more then 2 minutes, something probably went wrong...")
-          //     reject()
-          //   }, 120000)
-          // })
+          //TODO Enable this when sensor network is operational again
+          let responseMeasurement = {};
+          // try {
+          //   responseMeasurement = JSON.parse(
+          //     (await this.cameraClient.receiveMeasurements()).toString()
+          //   );
+          //   console.log(responseMeasurement);
+          // } catch (err) {
+          //   console.log(err);
+          // }
 
-          // Promise.race([movePromise, timeoutPromise]).catch(err => {
-          //   log("PhotoSequence", "Move Error Catch", err)
-          // })
-        } catch (err) {
-          log("PhotoSequence", "Move Error", err)
+          let responseCamera = {};
+          try {
+            responseCamera = JSON.parse(
+              (await this.cameraClient.takePicture()).toString()
+            );
+            log("PhotoSequence", "Camera Response Status", responseCamera.status)
+
+            this.documentStorage.writePlant(
+              this.points[pointIndex],
+              responseCamera,
+              responseMeasurement
+            )
+          } catch (err) {
+            console.log(err);
+          }
+
+          this.pointCallback(pointIndex)
         }
-
-        let responseMeasurement = {};
-        // try {
-        //   responseMeasurement = JSON.parse(
-        //     (await this.cameraClient.receiveMeasurements()).toString()
-        //   );
-        //   console.log(responseMeasurement);
-        // } catch (err) {
-        //   console.log(err);
-        // }
-
-        let responseCamera = {};
-        try {
-          responseCamera = JSON.parse(
-            (await this.cameraClient.takePicture()).toString()
-          );
-          log("PhotoSequence", "Camera Response Status", responseCamera.status)
-          // console.log(responseCamera);
-
-          // savePlant(
-          //   this.points[pointIndex],
-          //   responseCamera,
-          //   responseMeasurement
-          // );
-
-          this.documentStorage.writePlant(
-            this.points[pointIndex],
-            responseCamera,
-            responseMeasurement
-          )
-        } catch (err) {
-          console.log(err);
-        }
-
-        this.pointCallback(pointIndex)
       }
 
       try {
         await this.farmbot.moveAbsolute({ x: 0, y: 100, z: 0, speed: 100 });
       } catch (err) {
-        console.log("Moved to home location with usual error");
+        log("PhotoSequence", "Moving Home Error", JSON.stringify(err))
       }
 
       resolve();
