@@ -5,23 +5,17 @@ import queue, threading
 
 class ImageHandler:
 
-    def __init__(self, config, tunnel):
+    def __init__(self, config):
         self.config = config
         self.imageQueue = queue.Queue(100)
-        self.tunnel = tunnel
 
         self.keepWorking = True
-        self.workerThread = threading.Thread(target=self.workerTask, daemon=True, args=(self.imageQueue, self.tunnel, self.config))
+        self.workerThread = threading.Thread(target=self.workerTask, daemon=True, args=(self.imageQueue, self.config))
         self.workerThread.start()
 
-    def workerTask(self, queue, tunnel, config):
+    def workerTask(self, queue, config):
         while True:
             image = queue.get()
-
-            if config.ssh_tunneling is True:
-                if tunnel.isTunnelAlive() is False:
-                    print("Reconnecting to the tunnel")
-                    tunnel.reconnectTunnel()
 
             print(f"Processing image with id: {image[0]}")
 
