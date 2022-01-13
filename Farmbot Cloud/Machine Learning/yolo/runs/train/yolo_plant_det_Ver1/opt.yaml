@@ -1,0 +1,41 @@
+weights: yolov5s.pt
+cfg: C:\Users\jelme\Documents\Avans_stuff\Jaar_4\ML\ML\Project\farmbot\Farmbot Cloud\Machine
+  Learning\yolov5\models\yolov5s.yaml
+data: C:\Users\jelme\Documents\Avans_stuff\Jaar_4\ML\ML\Project\farmbot\Farmbot Cloud\Machine
+  Learning\yolov5\data\farmbot.yaml
+hyp: C:\Users\jelme\Documents\Avans_stuff\Jaar_4\ML\ML\Project\farmbot\Farmbot Cloud\Machine
+  Learning\yolov5\data\hyps\hyp.scratch.yaml
+epochs: 100
+batch_size: 10
+imgsz: 640
+rect: false
+resume: false
+nosave: false
+noval: false
+noautoanchor: false
+evolve: null
+bucket: ''
+cache: null
+image_weights: false
+device: ''
+multi_scale: false
+single_cls: false
+adam: false
+sync_bn: false
+workers: 24
+project: yolov5\runs\train
+name: yolo_plant_det
+exist_ok: false
+quad: false
+linear_lr: false
+label_smoothing: 0.0
+patience: 100
+freeze:
+- 0
+save_period: -1
+local_rank: -1
+entity: null
+upload_dataset: false
+bbox_interval: -1
+artifact_alias: latest
+save_dir: yolov5\runs\train\yolo_plant_det4

@@ -271,3 +271,7 @@ Thumbs.db
 Farmbot Cloud/restAPI/pubsub-service-account.json
 Farmbot Cloud/camera/pubsub-service-account.json
 Farmbot Cloud/ML/pubsub-service-account.json
+Farmbot Cloud/Machine Learning/datasets/*
+
+
+Farmbot Cloud/Machine Learning/yolo/yolov5x.pt
