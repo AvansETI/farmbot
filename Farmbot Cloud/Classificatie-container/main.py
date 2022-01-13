@@ -1,4 +1,4 @@
-from email.mime import image
+from calendar import month
 import os
 from flask import Flask, request
 from google.cloud import storage
@@ -6,11 +6,14 @@ import torch
 import yaml
 import cv2
 import numpy as np
+import datetime
 
 app = Flask(__name__)
 classification_model = None
 
 STORAGE_BUCKET_NAME = "farmbot-avans-cloud.appspot.com"
+DESTINATION_FOLDER = "Classifications/"
+IMAGE_EXTENSION = ".jpg"
 
 
 @app.route('/')
@@ -26,22 +29,33 @@ def classify_image():
     client = storage.Client()
     bucket = client.bucket(STORAGE_BUCKET_NAME)
     blob = bucket.blob(incoming_json['filepath'])
-    print("Blob: "+ blob)
     image_url = blob.public_url
-    print(image_url)
+
+    # Dont worry about this line, just a little bit of string slicing
+    file_name = incoming_json['filepath'].split('/')[-1].split('.')[0]
 
     classification_model = torch.hub.load(
         'yolo', 'custom', path='best.pt', source='local')
 
     results = classification_model(image_url)
 
-    # img = results.render()
+    img = results.render()
     # print(img[0]) <-- image als array?
     # converteren naar blob en opslaan in cloud storage
+    local_filepath = '/classification/{name}{extension}'.format(
+        name=file_name, extension=IMAGE_EXTENSION)
+    cv2.imwrite(local_filepath, img[0])
 
-    boxes = results.xyxyn
-    # boxes ook opslaan in cloud firestore? format boxes --> [x,y,x,y,n] is een tensor
-    print(boxes)
+    dateTuple = datetime.datetime.now().timetuple()
+    date = "{day}-{month}-{year}".format(day = dateTuple[2], month = dateTuple[1], year = dateTuple[0])
+
+    target_filepath = DESTINATION_FOLDER + date + "/" + file_name
+
+    classification_blob = bucket.blob(target_filepath + IMAGE_EXTENSION)
+    classification_blob.upload_from_filename(local_filepath)
+
+    metadata_blob = bucket.blob(target_filepath + ".txt")
+    metadata_blob.upload_from_string(results.pandas().xyxy[0].to_json(orient="records"))
 
     return "Good test 🚀"
 
