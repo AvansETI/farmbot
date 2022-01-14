@@ -5,6 +5,7 @@ import express from "express";
 import axios from "axios";
 
 import config from "./../config.js";
+import log from "./../utils/logger.js";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/:imageId", (req, res) => {
   //   res.sendFile(path.resolve(`images/${photoId}.jpg`));
   // }
 
-  res.send(410).send("Function not implemented")
+  res.send(410).send("Function not implemented");
 });
 
 /*
@@ -34,11 +35,11 @@ router.post("/", (req, res) => {
   //   }
   //   res.status(200).send();
   // });
-
   axios
     .post(
       `${config.labelingContainer.endpoint}/image?messageId=${req.query.messageId}`,
-      req.body
+      req.body,
+      { headers: { "Content-type": "image/jpg" } }
     )
     .then((response) => {
       res.status(200).send(response);

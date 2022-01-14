@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 import cron from "node-cron";
 
 import imageEndpoint from "./endpoints/imageEndpoint.js";
@@ -10,27 +10,27 @@ import plantEndpoint from "./endpoints/plantEndpoint.js";
 
 import FarmbotManager from "./logic/farmbotManager.js";
 import config from "./config.js";
-import log from "./utils/logger.js"
+import log from "./utils/logger.js";
 
 const app = express();
-const logSource = "Main"
+const logSource = "Main";
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: "application/json" }));
 app.use(
-    bodyParser.raw({
-        inflate: true,
-        limit: "15mb",
-        type: "image/*",
-    })
+  bodyParser.raw({
+    inflate: true,
+    limit: "15mb",
+    type: "image/*",
+  })
 );
 
-app.all("*", function(req, res, next) {
-    console.log(
-        `[${new Date().toISOString()}] [${req.method}] ${req.url} has been invoked!`
-    );
-    next();
+app.all("*", function (req, res, next) {
+  console.log(
+    `[${new Date().toISOString()}] [${req.method}] ${req.url} has been invoked!`
+  );
+  next();
 });
 
 app.use("/image", imageEndpoint);
@@ -48,24 +48,24 @@ app.use(express.static("public"));
 //     await farmbotManager.performWaterSequence();
 //     log(logSource, "CronJob", "Stopping Water Sequence")
 // });
-const farmbotManager = new FarmbotManager()
+const farmbotManager = new FarmbotManager();
 
 app.get("/dataSequence", async (req, res) => {
-    await farmbotManager.connect();
-    await farmbotManager.performDataSequence();
-    res.end("Data sequence has started!");
-    farmbotManager.disconnect()
+  await farmbotManager.connect();
+  await farmbotManager.performDataSequence();
+  res.end("Data sequence has finished!");
+//   farmbotManager.disconnect();
 });
 
 app.get("/waterSequence", async (req, res) => {
-    await farmbotManager.connect()
-    await farmbotManager.performWaterSequence();
-    res.end("Water sequence has started!");
-    farmbotManager.disconnect()
+  await farmbotManager.connect();
+  await farmbotManager.performWaterSequence();
+  res.end("Water sequence has finished!");
+//   farmbotManager.disconnect();
 });
 
-app.listen(config.http.port, function() {
-    log("Main", "Startup", `Server started at port: ${config.http.port} `)
+app.listen(config.http.port, function () {
+  log("Main", "Startup", `Server started at port: ${config.http.port} `);
 });
 
 // farmbotManager.performDataSequence();

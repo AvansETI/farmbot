@@ -27,7 +27,7 @@ export default class PhotoSequence {
     if (!(await this.readStatus()).pins[10].value) {
       console.log("Turn on the Pi peripheral")
       await this.farmbot.togglePin({ pin_number: 10 });
-      setTimeout(async () => {
+      await setTimeout(async () => {
         return this.performAction(lastPoint);
       }, 120000);
     } else {

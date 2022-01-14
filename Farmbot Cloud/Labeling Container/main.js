@@ -1,6 +1,7 @@
 const MediaStorage = require('./mediastorage')
 const DocumentStorage = require('./documentstorage')
 
+const cors = require('cors')
 const config = require('./config')
 
 const fs = require("fs")
@@ -16,6 +17,7 @@ var documents = new DocumentStorage()
 const app = express()
 const PORT = config.port
 // Tell express to use body-parser's JSON parsing
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: "application/json" }));
 app.use(
