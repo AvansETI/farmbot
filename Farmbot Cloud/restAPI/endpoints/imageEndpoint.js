@@ -42,7 +42,23 @@ router.post("/", (req, res) => {
       { headers: { "Content-type": "image/jpg" } }
     )
     .then((response) => {
-      res.status(200).send(response);
+      log("Image Endpoint", "Labeling Container Response", JSON.stringify(response.data))
+
+      // Image has been uploaded via the labeling container
+      // Now run the image through the classification model for plant recognition
+      axios.post(
+        `${config.classificationContainer.endpoint}/classify`,
+        {filepath: response.data.filepath}
+      )
+      .then((res) => {
+        log("Image Endpoint", "Classification Container Response", res)
+      })
+      .catch((error) => {
+        log("Image Endpoint", "Classification Container Error", error)
+        res.status(500).send(error);
+      })
+
+      res.status(200).send(response.data);
     })
     .catch((error) => {
       res.status(500).send(error);
