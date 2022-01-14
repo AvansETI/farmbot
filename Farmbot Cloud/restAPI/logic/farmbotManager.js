@@ -63,36 +63,22 @@ export default class FarmbotManager {
       this.farmbot.on("logs", (data, eventName) => {
         let incomingMessage = JSON.stringify(data.message)
 
-        // TODO Change this wonky way to check for back in sync message (Exact message content not known yet)
-        if(incomingMessage.includes("async")){
-          log(this.logSource, "Incoming Log Message", "Found a Async message")
-          if(this.isExecuting){
-            log(this.logSource, "Incoming Log Message", "Something was executing, might be a loss of connection")
-            this.asyncMessageCount += 1
+        if (incomingMessage === "Auto sync complete") {
+          log(this.logSource, "Incoming Log Message", "Found a sync complete message")
+          if (this.isExecuting) {
+            log(this.logSource, "Incoming Log Message", "Something was executing, there was a loss of connection")
+            log(this.logSource, "Sequence Restart", "Attempting to restart a sequence")
+            log(this.logSource, "Sequence Restart", `Previous executing sequence:${this.runningSequence}`)
+            log(this.logSource, "Sequence Restart", `Last executing point:${this.lastPoint}`)
 
-            if(this.asyncMessageCount == 2){
-              // TODO Make it boot back into the work the farmbot was doing
-              log(this.logSource, "Incoming Log Message", "Found a second async message, probably a disconnect")
-              log(this.logSource, "Sequence Restart", "Attempting to restart a sequence")
-              log(this.logSource, "Sequence Restart", `Previous executing sequence:${this.runningSequence}`)
-              log(this.logSource, "Sequence Restart", `Last executing point:${this.lastPoint}`)
-              
-              switch(this.runningSequence){
-                case "data": 
-                  this.performDataSequence()
-                case "water":
-                  this.performWaterSequence()
-  
-              }
-  
-              this.asyncMessageCount = 0
+            switch (this.runningSequence) {
+              case "data":
+                this.performDataSequence()
+              case "water":
+                this.performWaterSequence()
             }
           }
-          
-
-          
         }
-        // log(this.logSource + "Logs", eventName, incomingMessage)
       })
       this.connectToCameraMqtt();
     }
@@ -104,7 +90,7 @@ export default class FarmbotManager {
     this.farmbot = null
   }
 
-  async getCredentialsFromSecrets(){
+  async getCredentialsFromSecrets() {
     log(this.logSource, "Credentials", "Trying to get the secrets")
 
     let [emailResponse] = await this.secretClient.accessSecretVersion({
@@ -118,7 +104,7 @@ export default class FarmbotManager {
     })
 
     this.farmbotInformation.password = passwordResponse.payload.data.toString('utf8')
-    
+
     // log(this.logSource, "Credentails email", this.farmbotInformation.email)
     // log(this.logSource, "Credentails password", this.farmbotInformation.password)
     log(this.logSource, "Credentails", "Secrets gathered")
