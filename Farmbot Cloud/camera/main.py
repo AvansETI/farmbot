@@ -4,7 +4,7 @@ from ImageHandler import ImageHandler
 from MqttCamera import MqttCamera
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="pubsub-service-account.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/pi/Documents/farmbot_camera_module/pubsub-service-account.json"
 
 if __name__ == "__main__":
     config = Configurations()
