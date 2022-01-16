@@ -66,7 +66,11 @@ app.post("/image", (req, res) => {
     media.uploadImage(localdir + photoPath, targetdir, photoPath)
 
     // add status report on foto send for debugging and logging purposes
-    res.status(200).send(`Succesfully saved ${photoPath} in ${targetdir}`);
+    let response = {
+      message: `Succesfully saved ${photoPath} in ${targetdir}`,
+      filepath: targetdir + photoPath
+    }
+    res.status(200).send(response);
   })
   .catch((reason) => {
     console.log("Something went wrong")

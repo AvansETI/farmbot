@@ -57,7 +57,11 @@ def classify_image():
     metadata_blob = bucket.blob(target_filepath + ".txt")
     metadata_blob.upload_from_string(results.pandas().xyxy[0].to_json(orient="records"))
 
-    return "Good test 🚀"
+    return { 
+        "message": "Succesfully saved Classifications",
+        "Image": target_filepath + IMAGE_EXTENSION,
+        "Labels": target_filepath + ".txt"
+    }
 
 
 if __name__ == "__main__":

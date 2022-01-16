@@ -6,6 +6,9 @@ export default {
     labelingContainer: {
         endpoint: "https://labeling-container-6vu6nynuxa-ez.a.run.app"
     },
+    classificationContainer: {
+        endpoint: "https://classificatie-container-6vu6nynuxa-ez.a.run.app"
+    },
     http: {
         port: 3000,
     },
