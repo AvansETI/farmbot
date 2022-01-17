@@ -9,4 +9,4 @@ Within these folders is documentation about working with the code.
 
 # Wiki
 
-The Wiki for this project contains guides for specific parts of the Git. There are guides for: Cloud services, Machine learning, Data & augmentation.
+The Wiki for this project contains guides for specific parts of the Git. There are guides for: Cloud services, Machine learning, Data & augmentation. Use these guides to clarify the workings of these project parts.
