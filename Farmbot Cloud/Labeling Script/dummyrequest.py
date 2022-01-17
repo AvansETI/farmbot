@@ -1,7 +1,8 @@
 import requests
 import cv2
 
-URL = "https://labeling-container-6vu6nynuxa-ez.a.run.app/image?messageId=08c22ba3-3835-439f-80a7-7c942db106f3"
+# TODO change url to the url of the server/container
+URL = "url/image?messageId=08c22ba3-3835-439f-80a7-7c942db106f3"
 imgUrl = 'testimages/biet.jpg'
 
 image = cv2.imread(imgUrl)
