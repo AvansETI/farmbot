@@ -203,6 +203,7 @@ export default class FarmbotManager {
           await sequence.performWateringSequence(this.lastPoint);
         } catch (err) {
           log(this.logSource, "Water Sequence", err)
+          reject();
         }
 
         this.isExecuting = false;

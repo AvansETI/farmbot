@@ -51,17 +51,18 @@ router.post("/", (req, res) => {
         {filepath: response.data.filepath}
       )
       .then((res) => {
-        log("Image Endpoint", "Classification Container Response", res)
+        log("Image Endpoint", "Classification Container Response", JSON.stringify(res.data))
       })
       .catch((error) => {
         log("Image Endpoint", "Classification Container Error", error)
-        res.status(500).send(error);
+        return res.status(500).send(error.data);
       })
 
-      res.status(200).send(response.data);
+      return res.status(200).send(response.data);
     })
     .catch((error) => {
-      res.status(500).send(error);
+      log("Image Endpoint", "Label Container Error", error)
+      return res.status(500).send(error.data);
     });
 });
 

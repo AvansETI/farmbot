@@ -226,7 +226,7 @@ export default class WaterSequence {
             // }
 
             try {
-                await this.farmbot.moveAbsolute({ x: 0, y: 100, z: 0, speed: 100 });
+                this.farmbot.moveAbsolute({ x: 0, y: 100, z: 0, speed: 100 });
             } catch (err) {
                 log("PhotoSequence", "Moving Home Error", JSON.stringify(err))
             }
